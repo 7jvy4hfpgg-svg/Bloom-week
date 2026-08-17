@@ -394,5 +394,52 @@ let bwTouchX=null;document.querySelector('.hero').addEventListener('touchstart',
 bwRenderMain();
 </script>
 
+
+<style>
+/* BLOOM WEEK V3 — nouvelle vue semaine + mois */
+.timeline{display:none!important}
+.week-board{display:grid;gap:9px}
+.wday{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:11px 12px}
+.wday.today{border-color:var(--gold);box-shadow:inset 0 0 0 1px rgba(198,166,107,.22)}
+.wday-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.wday-head b{font-family:Georgia,serif;font-size:16px;font-weight:500}
+.wadd{width:30px;height:30px;border-radius:11px;border:1px solid #dfcfd1;background:#fff;color:var(--accent);font-size:20px}
+.wevent{display:grid;grid-template-columns:48px 5px 1fr 18px;gap:8px;align-items:center;padding:8px 1px;border-top:1px solid #f0e6e2;cursor:pointer}
+.wevent:first-of-type{border-top:none}.wtime{font-size:11px;color:var(--muted)}.wbar{height:32px;border-radius:99px}.wtext b{display:block;font-size:13px}.wtext small{font-size:10px;color:var(--muted)}.wempty{font-size:11px;color:#a38f95;padding:6px 0}
+.month-grid{gap:4px!important}.mcell{min-height:83px!important;padding:5px!important;overflow:hidden!important}.mcell b{font-family:Georgia,serif;font-size:13px}.mitems{margin-top:4px}.mitem{font-size:8px;line-height:1.15;padding:3px 3px;border-radius:5px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#f2e8e9;border-left:3px solid var(--accent)}.mmore{font-size:8px;color:var(--accent);padding-left:3px}.month-legend{display:flex;gap:8px;overflow:auto;margin:0 0 10px;font-size:9px;color:var(--muted)}.month-legend span{white-space:nowrap}.month-legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px}
+.editSheet{position:fixed;inset:0;background:rgba(60,43,49,.3);display:none;align-items:flex-end;justify-content:center;z-index:90}.editSheet.show{display:flex}.editBox{width:min(460px,100%);max-height:91vh;overflow:auto;background:#fffaf7;border-radius:26px 26px 0 0;padding:18px 16px calc(24px + env(safe-area-inset-bottom))}.editBox h3{font:500 22px Georgia,serif;margin:0 0 12px}.danger{color:#a85f68}
+</style>
+<div id="editSheet" class="editSheet" onclick="if(event.target===this)closeEdit()"><div class="editBox"><div class="handle"></div><h3>Modifier l’événement</h3>
+<div class="field"><label>Titre</label><input id="eTitle"></div><div class="field"><label>Catégorie</label><select id="eCat"></select></div>
+<div class="row"><div class="field"><label>Date</label><input id="eDate" type="date"></div><div class="field"><label>Début</label><input id="eTime" type="time"></div></div>
+<div class="row"><div class="field"><label>Date fin</label><input id="eEndDate" type="date"></div><div class="field"><label>Fin</label><input id="eEndTime" type="time"></div></div>
+<div class="row"><div class="field"><label>Rappel</label><select id="eReminder"><option value="none">Aucun</option><option value="0">À l’heure</option><option value="15">15 min avant</option><option value="60">1 h avant</option><option value="1440">La veille</option></select></div><div class="field"><label>Répéter</label><select id="eRepeat"><option value="none">Jamais</option><option value="weekly">Chaque semaine</option><option value="biweekly">Toutes les 2 semaines</option><option value="monthly">Chaque mois</option></select></div></div>
+<div class="field"><label>Note</label><textarea id="eNote"></textarea></div><div id="autoHint" class="smallnote"></div>
+<div class="row"><button class="btn danger" onclick="deleteEdit()">Supprimer</button><button class="btn" onclick="closeEdit()">Annuler</button><button class="btn primary" onclick="saveEdit()">Enregistrer</button></div></div></div>
+<script>
+BW.exceptions=BW.exceptions||{}; let currentEdit=null;
+function autoKey(e){return e.gid||('auto-'+e.title+'-'+e.date)}
+const oldGen=bwGenerated;
+bwGenerated=function(w){return oldGen(w).map(e=>{e.gid=autoKey(e);return BW.exceptions[e.gid]===undefined?e:BW.exceptions[e.gid]}).filter(Boolean)}
+function openEdit(e){currentEdit=e;eCat.innerHTML=BW_CATS.map(c=>`<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');eTitle.value=e.title||'';eCat.value=e.cat;eDate.value=e.date;eTime.value=e.time||'';eEndDate.value=e.endDate||e.date;eEndTime.value=e.endTime||'';eReminder.value=e.reminder||'none';eRepeat.value=e.repeat||'none';eNote.value=e.note||'';autoHint.textContent=e.generated?'Cette occurrence vient de ton roulement automatique. Cette modification ne changera que ce jour.':'';editSheet.classList.add('show')}
+function closeEdit(){editSheet.classList.remove('show')}
+function saveEdit(){if(!currentEdit)return;let o={...currentEdit,title:eTitle.value.trim()||currentEdit.title,cat:eCat.value,date:eDate.value,time:eTime.value,endDate:eEndDate.value||eDate.value,endTime:eEndTime.value,reminder:eReminder.value,repeat:eRepeat.value,note:eNote.value};if(currentEdit.generated){BW.exceptions[autoKey(currentEdit)]=o}else{let i=BW.events.findIndex(x=>x.id===currentEdit.id);if(i>=0)BW.events[i]=o}bwSave();closeEdit();bwRenderMain();bwToast('Événement modifié ✓')}
+function deleteEdit(){if(!currentEdit)return;if(currentEdit.generated)BW.exceptions[autoKey(currentEdit)]=null;else BW.events=BW.events.filter(x=>x.id!==currentEdit.id);bwSave();closeEdit();bwRenderMain();bwToast('Événement supprimé')}
+function renderWeekBoard(){
+ let sec=document.querySelector('.timeline').parentElement, board=document.getElementById('weekBoard');if(!board){board=document.createElement('div');board.id='weekBoard';board.className='week-board';sec.appendChild(board)}
+ let end=new Date(bwWeekStart);end.setDate(end.getDate()+6);let ev=bwAllEvents(bwWeekStart,end);board.innerHTML='';
+ for(let i=0;i<7;i++){let d=new Date(bwWeekStart);d.setDate(d.getDate()+i);let ds=bwIso(d),arr=ev.filter(x=>bwTouches(x,ds)).sort((a,b)=>(a.time||'').localeCompare(b.time||'')),box=document.createElement('div');box.className='wday'+(ds===bwIso(new Date())?' today':'');box.innerHTML=`<div class="wday-head"><b>${['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'][i]} ${d.getDate()}</b><button class="wadd" onclick="event.stopPropagation();openAddFor('${ds}')">+</button></div>`+(arr.length?arr.map((e,j)=>{let c=bwCat(e.cat);return `<div class="wevent" data-d="${ds}" data-i="${j}"><div class="wtime">${e.date===ds?(e.time||'—'):'↔'}</div><div class="wbar" style="background:${c.color}"></div><div class="wtext"><b>${e.title}</b><small>${c.emoji} ${e.note||c.name}${e.reminder&&e.reminder!=='none'?' · 🔔':''}</small></div><div>›</div></div>`}).join(''):'<div class="wempty">Rien de prévu · ajoute quelque chose ♡</div>');board.appendChild(box);box.querySelectorAll('.wevent').forEach((el,j)=>el.onclick=()=>openEdit(arr[j]))}
+}
+function openAddFor(ds){bwSelected=new Date(ds+'T00:00:00');openAdd();newDate.value=ds;newEndDate.value=ds}
+const baseRender=bwRenderMain;bwRenderMain=function(){baseRender();renderWeekBoard()}
+const baseMonth=bwRenderMonth;bwRenderMonth=function(){
+ let y=bwMonth.getFullYear(),m=bwMonth.getMonth(),first=new Date(y,m,1),start=bwMonday(first),end=new Date(start);end.setDate(end.getDate()+41),ev=bwAllEvents(start,end);
+ monthTitle.textContent=`${BW_MONTH[m].charAt(0).toUpperCase()+BW_MONTH[m].slice(1)} ${y}`;let grid=monthGrid;grid.innerHTML=BW_DAY.map(x=>`<div class="mh">${x}</div>`).join('');
+ let legend=document.getElementById('monthLegend');if(!legend){legend=document.createElement('div');legend.id='monthLegend';legend.className='month-legend';grid.parentElement.insertBefore(legend,grid)}legend.innerHTML=['work','kids','couple','bloom'].map(id=>{let c=bwCat(id);return `<span><i style="background:${c.color}"></i>${c.name}</span>`}).join('');
+ for(let i=0;i<42;i++){let d=new Date(start);d.setDate(d.getDate()+i),ds=bwIso(d),arr=ev.filter(x=>bwTouches(x,ds)),b=document.createElement('button');b.className='mcell'+(d.getMonth()!==m?' muted':'')+(ds===bwIso(new Date())?' today':'');b.innerHTML=`<b>${d.getDate()}</b><div class="mitems">${arr.slice(0,2).map(e=>`<div class="mitem" style="border-left-color:${bwCat(e.cat).color}">${e.title}</div>`).join('')}${arr.length>2?`<div class="mmore">+${arr.length-2} autres</div>`:''}</div>`;b.onclick=()=>{bwSelected=d;bwWeekStart=bwMonday(d);closeOverlay();bwRenderMain()};grid.appendChild(b)}
+}
+bwRenderMain();
+</script>
+
 </body>
 </html>
