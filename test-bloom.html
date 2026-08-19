@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f0ed">
+<title>Bloom Week — test Safari</title>
+<style>
+:root{--bg:#f6f0ed;--panel:#fffaf7;--ink:#4a3a3f;--muted:#8d7a80;--line:#eadfda;--accent:#9d6877;--soft:#ead8df;--gold:#c6a66b;--green:#97aa9c;--blue:#95a9c3;--rose:#bb7b81;--lav:#b8a7c9}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,textarea{font:inherit}button{cursor:pointer}
+.app{max-width:460px;margin:auto;min-height:100vh;background:linear-gradient(#fbf7f4,#f5eeeb);padding:24px 16px 94px}
+.page{display:none}.page.active{display:block}.top{display:flex;justify-content:space-between;gap:12px}.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:32px;margin:5px 0 4px}.sub{font-size:14px;color:var(--muted)}
+.avatar,.back{width:44px;height:44px;border-radius:16px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:22px}
+.hero{margin-top:18px;background:rgba(255,250,247,.82);border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 12px 30px rgba(80,55,64,.07)}
+.weekhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.weektitle{font-family:Georgia,serif;font-size:19px}.badge{font-size:12px;background:#efe3e6;color:#805664;padding:7px 10px;border-radius:999px}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.day{padding:9px 2px;border-radius:16px;text-align:center;color:var(--muted);font-size:11px;border:1px solid transparent;background:transparent}
+.day b{display:block;font-size:16px;color:var(--ink);margin-top:3px}.day.active{background:var(--soft);border-color:#dec5ce;color:#7e5562}.rel{display:block;margin-top:4px;font-size:9px;color:#7e5562;font-weight:700}
+.section{margin-top:20px}.section-title{display:flex;justify-content:space-between;align-items:center;margin:0 2px 10px}.section-title h2{font-family:inherit;font-size:17px;font-weight:700;margin:0}.section-title span{font-size:12px;color:var(--muted)}
+.board{display:grid;gap:9px}.card{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:11px 12px}.card.selected{border-color:var(--gold);box-shadow:0 8px 24px rgba(111,78,56,.08)}
+.cardhead{display:flex;justify-content:space-between;align-items:center}.cardhead b{font-family:Georgia,serif;font-size:17px;font-weight:500}.relpill{display:inline-block;margin-left:7px;padding:4px 8px;border-radius:999px;background:#f1e4e8;color:#7b5561;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:10px;font-weight:700}
+.plus{width:30px;height:30px;border-radius:11px;border:1px solid #dfcfd1;background:#fff;color:var(--accent);font-size:20px}
+.event{display:grid;grid-template-columns:50px 5px 1fr 16px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid #f0e6e2;background:transparent;border-left:0;border-right:0;border-bottom:0;width:100%;text-align:left;color:inherit}
+.time{font-size:11px;color:var(--muted)}.bar{height:34px;border-radius:99px}.event b{display:block;font-size:13px}.event small{font-size:10px;color:var(--muted)}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(460px,100%);height:78px;background:rgba(255,250,247,.94);backdrop-filter:blur(18px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:9px 18px calc(9px + env(safe-area-inset-bottom));z-index:20}
+.nav button{background:none;border:0;color:var(--muted);font-size:10px}.nav span{display:block;font-size:21px;margin-bottom:3px}.nav .active{color:var(--accent)}.nav .bigplus{width:44px;height:44px;border-radius:16px;background:var(--accent);color:#fff;margin:-5px auto 0;font-size:26px}
+.overlaytop{display:flex;justify-content:space-between;align-items:flex-start}.overlaytop h2{font-size:29px;margin:5px 0}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:14px;margin-top:12px}.task{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid #eee3df}.task:first-child{border-top:0}.task input{width:20px;height:20px;accent-color:var(--accent)}.task.done span{text-decoration:line-through;color:#a38f95}
+.trackwrap{overflow:hidden;touch-action:pan-y}.track{display:flex;width:200%;transition:transform .25s ease}.pane{width:50%;flex:none}.caption{text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-size:10px;margin:12px 0}
+.mday{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:12px;margin-bottom:12px}.mday h3{margin:0 0 8px;font-size:14px}.mline{padding:8px 0;border-top:1px solid #eee3df;font-size:12px}
+.pager{display:flex;justify-content:center;gap:7px;margin:14px}.pager button{width:8px;height:8px;border:0;border-radius:99px;background:#d8c9ce;padding:0}.pager button.active{width:20px;background:var(--accent)}
+.field{margin-top:12px}.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}.field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:13px;background:#fff;padding:11px;color:var(--ink)}
+.btn{border:1px solid var(--line);background:#fff;border-radius:13px;padding:11px;color:var(--ink)}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);width:100%;margin-top:12px}
+.modal{position:fixed;inset:0;background:rgba(60,43,49,.28);display:none;align-items:flex-end;justify-content:center;z-index:50}.modal.show{display:flex}.sheet{width:min(460px,100%);background:#fffaf7;border-radius:26px 26px 0 0;padding:18px 16px calc(22px + env(safe-area-inset-bottom))}
+.row{display:flex;gap:8px}.row>*{flex:1}.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);display:none;background:#4a3a3f;color:#fff;border-radius:99px;padding:9px 13px;font-size:12px;z-index:80}.toast.show{display:block}
+</style>
+</head>
+<body>
+<div class="app">
+<section id="week" class="page active">
+<div class="top"><div><div class="kicker">Bloom Week</div><h1>Bonjour Francheska ♡</h1><div class="sub">Ton semainier, pensé autour de ta vraie vie.</div></div><button class="avatar" data-nav="settings">✦</button></div>
+<div class="hero"><div class="weekhead"><div class="weektitle">17 — 23 août</div><div class="badge">Petite semaine · 20 h</div></div>
+<div class="days">
+<button class="day" data-d="17">LUN<b>17</b></button>
+<button class="day" data-d="18">MAR<b>18</b><span class="rel">Hier</span></button>
+<button class="day active" data-d="19">MER<b>19</b><span class="rel">Aujourd’hui</span></button>
+<button class="day" data-d="20">JEU<b>20</b><span class="rel">Demain</span></button>
+<button class="day" data-d="21">VEN<b>21</b></button><button class="day" data-d="22">SAM<b>22</b></button><button class="day" data-d="23">DIM<b>23</b></button>
+</div></div>
+<div class="section"><div class="section-title"><h2>Aujourd’hui</h2><span>Mercredi 19 août</span></div><div class="board" id="board">
+<article class="card selected" data-card="19"><div class="cardhead"><b>Mercredi 19 <span class="relpill">Aujourd’hui</span></b><button class="plus">+</button></div>
+<button class="event"><span class="time">jour entier</span><i class="bar" style="background:var(--green)"></i><span><b>Semaine de garde avec les enfants</b><small>Les enfants sont avec toi</small></span><span>›</span></button>
+<button class="event"><span class="time">07:30</span><i class="bar" style="background:var(--green)"></i><span><b>Rentrée scolaire Elijah</b><small>Rentrée scolaire</small></span><span>›</span></button>
+<button class="event"><span class="time">10:00</span><i class="bar" style="background:var(--rose)"></i><span><b>Avec ❤️</b><small>Journée avec Vincent</small></span><span>›</span></button>
+</article>
+<article class="card" data-card="17"><div class="cardhead"><b>Lundi 17</b><button class="plus">+</button></div><button class="event"><span class="time">10:00</span><i class="bar" style="background:var(--green)"></i><span><b>Récupérer les enfants</b><small>Début de la semaine de garde</small></span><span>›</span></button></article>
+<article class="card" data-card="18"><div class="cardhead"><b>Mardi 18 <span class="relpill">Hier</span></b><button class="plus">+</button></div><button class="event"><span class="time">08:00</span><i class="bar" style="background:var(--green)"></i><span><b>Rentrée scolaire Noor</b><small>08:00 — 15:30</small></span><span>›</span></button></article>
+<article class="card" data-card="20"><div class="cardhead"><b>Jeudi 20 <span class="relpill">Demain</span></b><button class="plus">+</button></div><button class="event"><span class="time">20:30</span><i class="bar" style="background:var(--blue)"></i><span><b>EHPAD</b><small>Père Favron · nuit</small></span><span>›</span></button></article>
+<article class="card" data-card="21"><div class="cardhead"><b>Vendredi 21</b><button class="plus">+</button></div><button class="event"><span class="time">18:30</span><i class="bar" style="background:var(--lav)"></i><span><b>Soirée Louange</b><small>Avec Aurélie · Église du Tampon</small></span><span>›</span></button></article>
+</div></div></section>
+<section id="lists" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Mes listes ♡</h2><div class="sub">Les tâches cochées restent visibles.</div></div><button class="back" data-nav="week">‹</button></div><div class="box"><div class="task"><input type="checkbox"><span>Relancer Action Logement</span></div><div class="task done"><input type="checkbox" checked><span>Demander l’attestation à l’avocat</span></div><div class="task"><input type="checkbox"><span>Vérifier les dossiers techniques Cosmic Bloom</span></div></div></section>
+<section id="month" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Mon mois ♡</h2><div class="sub">Swipe entre la frise et l’agenda.</div></div><button class="back" data-nav="week">‹</button></div><div class="trackwrap" id="swipe"><div class="track" id="track"><div class="pane"><div class="caption">Frise verticale</div><div class="mday"><h3>Mardi 18</h3><div class="mline">Rentrée scolaire Noor · 08:00–15:30</div></div><div class="mday"><h3>Mercredi 19</h3><div class="mline">Rentrée scolaire Elijah · 07:30</div><div class="mline">Avec ❤️ · 10:00</div></div><div class="mday"><h3>Vendredi 21</h3><div class="mline">Soirée Louange · 18:30</div></div></div><div class="pane"><div class="caption">Agenda par semaines</div><div class="mday"><h3>17 — 23 août</h3><div class="mline">18 · Rentrée Noor</div><div class="mline">19 · Rentrée Elijah</div><div class="mline">19 · Avec ❤️</div><div class="mline">21 · Soirée Louange</div></div><div class="mday"><h3>24 — 30 août</h3><div class="mline">24 · 🚒 Vincent en garde</div><div class="mline">26 · RDV Gynéco</div></div></div></div><div class="pager"><button id="p0" class="active"></button><button id="p1"></button></div></section>
+<section id="settings" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Réglages ♡</h2></div><button class="back" data-nav="week">‹</button></div><div class="box"><div class="field"><label>Prénom</label><input value="Francheska"></div><div class="field"><label>Notes de test</label><textarea></textarea></div><button class="btn primary" id="settingsSave">Enregistrer</button></div></section>
+</div>
+<nav class="nav"><button data-nav="week" class="active"><span>▦</span>Semaine</button><button data-nav="lists"><span>✓</span>Listes</button><button data-nav="add" class="bigplus">+</button><button data-nav="month"><span>▣</span>Mois</button><button data-nav="settings"><span>⚙︎</span>Réglages</button></nav>
+<div class="modal" id="modal"><div class="sheet"><h2>Nouvel événement</h2><div class="field"><label>Titre</label><input id="title"></div><div class="row"><button class="btn" id="cancel">Annuler</button><button class="btn primary" id="save">Enregistrer</button></div></div></div><div class="toast" id="toast">Test OK ✓</div>
+<script>
+(function(){
+'use strict';
+var pages=['week','lists','month','settings'];
+function show(n){if(n==='add'){modal.classList.add('show');return}pages.forEach(function(p){document.getElementById(p).classList.toggle('active',p===n)});document.querySelectorAll('[data-nav]').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-nav')===n)});window.scrollTo(0,0)}
+document.querySelectorAll('[data-nav]').forEach(function(b){b.addEventListener('click',function(){show(this.getAttribute('data-nav'))})});
+document.querySelectorAll('.day').forEach(function(b){b.addEventListener('click',function(){var d=this.getAttribute('data-d');document.querySelectorAll('.day').forEach(function(x){x.classList.remove('active')});this.classList.add('active');var card=document.querySelector('[data-card="'+d+'"]');if(card){document.querySelectorAll('.card').forEach(function(c){c.classList.remove('selected')});card.classList.add('selected');document.getElementById('board').prepend(card);card.scrollIntoView({behavior:'smooth',block:'start'})}})});
+var modal=document.getElementById('modal');document.querySelectorAll('.plus').forEach(function(b){b.onclick=function(e){e.stopPropagation();modal.classList.add('show')}});document.getElementById('cancel').onclick=function(){modal.classList.remove('show')};document.getElementById('save').onclick=function(){if(!document.getElementById('title').value.trim()){alert('Ajoute un titre');return}modal.classList.remove('show');flash()};
+document.querySelectorAll('.task input').forEach(function(c){c.onchange=function(){this.parentElement.classList.toggle('done',this.checked)}});
+document.getElementById('settingsSave').onclick=flash;
+var pane=0,track=document.getElementById('track'),p0=document.getElementById('p0'),p1=document.getElementById('p1');function setPane(n){pane=n;track.style.transform='translateX('+(-50*n)+'%)';p0.classList.toggle('active',n===0);p1.classList.toggle('active',n===1)}p0.onclick=function(){setPane(0)};p1.onclick=function(){setPane(1)};
+var sx=0,sy=0,sw=document.getElementById('swipe');sw.addEventListener('touchstart',function(e){sx=e.changedTouches[0].clientX;sy=e.changedTouches[0].clientY},{passive:true});sw.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy))setPane(dx<0?1:0)},{passive:true});
+function flash(){var t=document.getElementById('toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show')},1200)}
+})();
+</script></body></html>
