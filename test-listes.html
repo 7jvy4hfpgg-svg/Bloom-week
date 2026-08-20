@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bloom Week — Test Listes</title>
+<style>
+:root{--bg:#f6f0ed;--panel:#fffaf7;--ink:#4a3a3f;--muted:#8d7a80;--line:#eadfda;--accent:#9d6877}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(#fbf7f4,#f5eeeb);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:460px;margin:auto;padding:24px 16px 50px;min-height:100vh}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:30px;margin:5px 0 4px}.sub{font-size:14px;color:var(--muted)}
+.listbar{display:flex;gap:9px;margin-top:16px}.search{flex:1;border:1px solid var(--line);background:var(--panel);border-radius:15px;padding:12px}.add{border:0;border-radius:15px;background:var(--accent);color:#fff;padding:0 14px;font-weight:650}
+.folders{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.folder{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;text-align:left;color:var(--ink);min-height:112px}
+.folder.active{border-color:#d8bfc8;background:#fdf8f7}.icon{display:block;width:36px;height:36px;margin-bottom:7px;color:#a0717f}.icon svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round}
+.folder b{font-family:Georgia,"Times New Roman",serif;font-size:16px;font-weight:500;display:block}.folder small{display:block;margin-top:4px;color:var(--muted);font-size:10px}
+.head{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 8px}.head h2{font-size:20px;margin:0}.head span{font-size:10px;color:var(--muted)}
+.todo{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:7px 14px}.task{display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-top:1px solid #eee3df}.task:first-child{border-top:0}.task input{width:20px;height:20px;accent-color:var(--accent);margin-top:2px}.copy{flex:1}.copy b{display:block;font-size:13px}.copy small{display:block;font-size:10px;color:var(--muted);margin-top:3px}.done .copy b,.done .copy small{text-decoration:line-through;color:#a38f95}.del{border:0;background:none;color:var(--muted);font-size:19px}
+.empty{text-align:center;padding:26px;color:var(--muted)}.empty .moon{display:block;font-size:30px;margin-bottom:6px;color:#ad8090}
+.modal{position:fixed;inset:0;background:rgba(60,43,49,.28);display:none;align-items:flex-end;justify-content:center}.modal.show{display:flex}.sheet{width:min(460px,100%);background:var(--panel);border-radius:26px 26px 0 0;padding:18px 16px 28px}.sheet h2{font-size:25px;margin:0 0 4px}.sheet .sub{font-size:11px}.field{margin-top:12px}.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:13px;background:#fff;padding:11px;color:var(--ink)}
+.row{display:flex;gap:8px;margin-top:14px}.btn{flex:1;border:1px solid var(--line);border-radius:13px;padding:11px;background:#fff;color:var(--ink)}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.note{margin-top:15px;padding:11px 13px;border-radius:15px;background:#f0e5e8;color:#7f5965;font-size:11px}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="kicker">Bloom Week</div>
+<h1>Mes listes ♡</h1>
+<div class="sub">Test direct de la fonction “Ajouter une tâche”.</div>
+
+<div class="listbar">
+<input id="search" class="search" placeholder="Rechercher une tâche…">
+<button id="addTask" class="add">＋ Tâche</button>
+</div>
+
+<div class="folders" id="folders"></div>
+<div class="head"><h2 id="title">Toutes mes tâches</h2><span id="count"></span></div>
+<div class="todo" id="todo"></div>
+
+<div class="note">⚠️ Pour que le bouton fonctionne sur iPhone, ouvre ce fichier depuis GitHub Pages/Safari. L’aperçu de l’app Fichiers bloque souvent le JavaScript.</div>
+</div>
+
+<div class="modal" id="modal"><div class="sheet">
+<h2>Nouvelle tâche ♡</h2>
+<div class="sub">Ici on ajoute une tâche, pas un événement de calendrier.</div>
+<div class="field"><label>Que veux-tu faire ?</label><input id="taskTitle" placeholder="Ex. Relancer mon avocat"></div>
+<div class="field"><label>Dossier</label><select id="taskFolder"></select></div>
+<div class="field"><label>Petite note (facultatif)</label><textarea id="taskNote" rows="3"></textarea></div>
+<div class="row"><button id="cancel" class="btn">Annuler</button><button id="save" class="btn primary">Ajouter la tâche</button></div>
+</div></div>
+
+<script>
+(function(){
+var FOLDERS=[
+['all','Toutes','Vue générale','<svg viewBox="0 0 48 48"><path d="M9 25c6-13 24-13 30 0-6 13-24 13-30 0Z"/><circle cx="24" cy="25" r="5"/><path d="M24 7v5M24 38v4M8 14l4 3M40 14l-4 3"/></svg>'],
+['bloom','Cosmic Bloom','Création · marque','<svg viewBox="0 0 48 48"><path d="M24 8c5 6 7 11 0 17-7-6-5-11 0-17Z"/><path d="M13 17c8 1 12 5 11 13-8-1-12-5-11-13Z"/><path d="M35 17c-8 1-12 5-11 13 8-1 12-5 11-13Z"/></svg>'],
+['work','Père Favron','Travail','<svg viewBox="0 0 48 48"><path d="M24 7c0 10-8 15-8 23a8 8 0 0 0 16 0c0-8-8-13-8-23Z"/><path d="M19 31c2 3 8 3 10 0"/></svg>'],
+['divorce','Divorce','Procédure · documents','<svg viewBox="0 0 48 48"><path d="M10 14c8-7 20-7 28 0"/><path d="M13 17l11 21 11-21"/><path d="M24 10v28"/></svg>'],
+['home','Logement','Maison · démarches','<svg viewBox="0 0 48 48"><path d="M8 24 24 10l16 14"/><path d="M13 22v16h22V22"/><path d="M20 38V27h8v11"/></svg>'],
+['finance','Finances','Budget · épargne','<svg viewBox="0 0 48 48"><path d="M24 7c7 6 10 12 10 19a10 10 0 0 1-20 0c0-7 3-13 10-19Z"/><path d="M20 22c2-2 8-2 8 2 0 5-8 2-8 7 0 4 6 4 8 2"/></svg>'],
+['kids','Enfants / Famille','École · garde','<svg viewBox="0 0 48 48"><path d="M24 13c3-5 9-6 13-2 4 4 3 10-1 14L24 38 12 25c-4-4-5-10-1-14 4-4 10-3 13 2Z"/></svg>'],
+['personal','Vie perso','Toi · couple · projets','<svg viewBox="0 0 48 48"><path d="M30 8a14 14 0 1 0 10 24A16 16 0 0 1 30 8Z"/><path d="M35 10l1 4 4 1-4 1-1 4-1-4-4-1 4-1 1-4Z"/></svg>']
+];
+var defaults=[
+{folder:'divorce',title:'Relancer mon avocat',note:'Demander l’attestation',done:false},
+{folder:'bloom',title:'Préparer le dossier technique',note:'',done:false},
+{folder:'kids',title:'Vérifier les affaires scolaires',note:'',done:false}
+];
+var tasks;try{tasks=JSON.parse(localStorage.getItem('bw_test_tasks')||'null')||defaults}catch(e){tasks=defaults}
+var current='all';
+function persist(){try{localStorage.setItem('bw_test_tasks',JSON.stringify(tasks))}catch(e){}}
+function renderFolders(){
+ var box=document.getElementById('folders');box.innerHTML='';
+ FOLDERS.forEach(function(f){
+  var b=document.createElement('button');b.className='folder'+(f[0]===current?' active':'');
+  b.innerHTML='<span class="icon">'+f[3]+'</span><b>'+f[1]+'</b><small>'+f[2]+'</small>';
+  b.onclick=function(){current=f[0];renderFolders();renderTasks()};
+  box.appendChild(b)
+ });
+ var sel=document.getElementById('taskFolder');sel.innerHTML='';
+ FOLDERS.slice(1).forEach(function(f){var o=document.createElement('option');o.value=f[0];o.textContent=f[1];sel.appendChild(o)})
+}
+function renderTasks(){
+ var q=(document.getElementById('search').value||'').toLowerCase(),todo=document.getElementById('todo');todo.innerHTML='';
+ var shown=0;
+ tasks.forEach(function(t,i){
+  if(current!=='all'&&t.folder!==current)return;
+  if((t.title+' '+(t.note||'')).toLowerCase().indexOf(q)<0)return;
+  shown++;
+  var r=document.createElement('div');r.className='task'+(t.done?' done':'');
+  r.innerHTML='<input type="checkbox" '+(t.done?'checked':'')+'><div class="copy"><b>'+t.title+'</b>'+(t.note?'<small>'+t.note+'</small>':'')+'</div><button class="del">×</button>';
+  r.querySelector('input').onchange=function(){t.done=this.checked;persist();renderTasks()};
+  r.querySelector('.del').onclick=function(){tasks.splice(i,1);persist();renderTasks()};
+  todo.appendChild(r)
+ });
+ var f=FOLDERS.find(function(x){return x[0]===current});document.getElementById('title').textContent=current==='all'?'Toutes mes tâches':f[1];document.getElementById('count').textContent=shown+(shown>1?' tâches':' tâche');
+ if(!shown)todo.innerHTML='<div class="empty"><span class="moon">☾ ✦</span>Aucune tâche ici.</div>'
+}
+var modal=document.getElementById('modal');
+document.getElementById('addTask').onclick=function(){document.getElementById('taskTitle').value='';document.getElementById('taskNote').value='';document.getElementById('taskFolder').value=current==='all'?'personal':current;modal.classList.add('show')};
+document.getElementById('cancel').onclick=function(){modal.classList.remove('show')};
+document.getElementById('save').onclick=function(){
+ var title=document.getElementById('taskTitle').value.trim();if(!title){alert('Écris une tâche.');return}
+ tasks.unshift({folder:document.getElementById('taskFolder').value,title:title,note:document.getElementById('taskNote').value.trim(),done:false});persist();current=document.getElementById('taskFolder').value;modal.classList.remove('show');renderFolders();renderTasks()
+};
+document.getElementById('search').oninput=renderTasks;
+renderFolders();renderTasks();
+})();
+</script>
+</body>
+</html>
