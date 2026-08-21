@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f0ed">
+<title>Bloom Week — test v2</title>
+<style>
+:root{--bg:#f6f0ed;--panel:#fffaf7;--ink:#4a3a3f;--muted:#8d7a80;--line:#eadfda;--accent:#9d6877;--soft:#ead8df;--gold:#c6a66b;--green:#97aa9c;--blue:#95a9c3;--rose:#bb7b81;--lav:#b8a7c9}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,textarea{font:inherit}button{cursor:pointer}.app{max-width:460px;margin:auto;min-height:100vh;background:linear-gradient(#fbf7f4,#f5eeeb);padding:24px 16px 94px}
+.page{display:none}.page.active{display:block}.top,.overlaytop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:32px;margin:5px 0 4px}.overlaytop h2{font-size:29px;margin:5px 0}.sub{font-size:14px;color:var(--muted)}
+.avatar,.back{width:44px;height:44px;border-radius:16px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:22px}
+.hero{margin-top:18px;background:rgba(255,250,247,.82);border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 12px 30px rgba(80,55,64,.07)}
+.weekhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.weektitle{font-family:Georgia,serif;font-size:19px}.badge{font-size:12px;background:#efe3e6;color:#805664;padding:7px 10px;border-radius:999px}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.day{padding:9px 2px;border-radius:16px;text-align:center;color:var(--muted);font-size:11px;border:1px solid transparent;background:transparent}
+.day b{display:block;font-size:16px;color:var(--ink);margin-top:3px}.day.active{background:var(--soft);border-color:#dec5ce;color:#7e5562}.rel{display:block;margin-top:4px;font-size:9px;color:#7e5562;font-weight:700}
+.section{margin-top:20px}.section-title{display:flex;justify-content:space-between;align-items:center;margin:0 2px 10px}.section-title h2{font-family:inherit;font-size:17px;font-weight:700;margin:0}.section-title span{font-size:12px;color:var(--muted)}
+.board{display:grid;gap:9px}.card{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:11px 12px}.card.selected{border-color:var(--gold);box-shadow:0 8px 24px rgba(111,78,56,.08)}
+.cardhead{display:flex;justify-content:space-between;align-items:center}.cardhead b{font-family:Georgia,serif;font-size:17px;font-weight:500}.relpill{display:inline-block;margin-left:7px;padding:4px 8px;border-radius:999px;background:#f1e4e8;color:#7b5561;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:10px;font-weight:700}
+.plus{width:30px;height:30px;border-radius:11px;border:1px solid #dfcfd1;background:#fff;color:var(--accent);font-size:20px}.event{display:grid;grid-template-columns:50px 5px 1fr 16px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid #f0e6e2;background:transparent;border-left:0;border-right:0;border-bottom:0;width:100%;text-align:left;color:inherit}
+.time{font-size:11px;color:var(--muted)}.bar{height:34px;border-radius:99px}.event b{display:block;font-size:13px}.event small{font-size:10px;color:var(--muted)}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(460px,100%);height:78px;background:rgba(255,250,247,.94);backdrop-filter:blur(18px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:9px 18px calc(9px + env(safe-area-inset-bottom));z-index:20}
+.nav button{background:none;border:0;color:var(--muted);font-size:10px}.nav span{display:block;font-size:21px;margin-bottom:3px}.nav .active{color:var(--accent)}.nav .bigplus{width:44px;height:44px;border-radius:16px;background:var(--accent);color:#fff;margin:-5px auto 0;font-size:26px}
+.search{width:100%;margin-top:18px;border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:12px 14px;color:var(--ink)}
+.folders{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.folder{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:14px;text-align:left;color:var(--ink)}.folder b{display:block;margin-top:7px}.folder small{color:var(--muted)}
+.todo{margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:8px 14px}.task{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid #eee3df}.task:first-child{border-top:0}.task input{width:20px;height:20px;accent-color:var(--accent)}.task.done span{text-decoration:line-through;color:#a38f95}
+.trackwrap{overflow:hidden;touch-action:pan-y}.track{display:flex;width:200%;transition:transform .25s ease}.pane{width:50%;flex:none}.caption{text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-size:10px;margin:12px 0}
+.mday,.vacbox{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:12px;margin-bottom:12px}.mday h3{margin:0 0 8px;font-size:14px}.mline{padding:8px 0;border-top:1px solid #eee3df;font-size:12px}.pager{display:flex;justify-content:center;gap:7px;margin:14px}.pager button{width:8px;height:8px;border:0;border-radius:99px;background:#d8c9ce;padding:0}.pager button.active{width:20px;background:var(--accent)}
+.vacrow{display:grid;grid-template-columns:5px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid #eee3df}.vacrow:first-child{border-top:0}.vline{height:36px;border-radius:99px;background:#c79cab}.vacrow:nth-child(2) .vline{background:#d7b08e}.vacrow:nth-child(3) .vline{background:#9fb4cf}.vacrow:nth-child(4) .vline{background:#9db4a2}.vacrow:nth-child(5) .vline{background:#c6a66b}.vacrow b{display:block;font-size:13px}.vacrow small{color:var(--muted);font-size:10px}.tag{font-size:10px;background:#f1e4e8;color:#7e5562;border-radius:99px;padding:5px 7px}
+.field{margin-top:12px}.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}.field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:13px;background:#fff;padding:11px;color:var(--ink)}.btn{border:1px solid var(--line);background:#fff;border-radius:13px;padding:11px;color:var(--ink)}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);width:100%;margin-top:12px}
+.modal{position:fixed;inset:0;background:rgba(60,43,49,.28);display:none;align-items:flex-end;justify-content:center;z-index:50}.modal.show{display:flex}.sheet{width:min(460px,100%);background:#fffaf7;border-radius:26px 26px 0 0;padding:18px 16px calc(22px + env(safe-area-inset-bottom))}.row{display:flex;gap:8px}.row>*{flex:1}.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);display:none;background:#4a3a3f;color:#fff;border-radius:99px;padding:9px 13px;font-size:12px;z-index:80}.toast.show{display:block}
+
+/* --- LISTES : patch rapide, fiable et intuitif --- */
+.listbar{display:flex;gap:9px;align-items:center;margin-top:16px}
+.listbar .search{margin-top:0;flex:1}
+.addtask{border:0;background:var(--accent);color:#fff;border-radius:15px;padding:12px 14px;font-weight:700;white-space:nowrap}
+.folder{position:relative;min-height:110px}
+.folder .sigil{display:block;width:34px;height:34px;margin-bottom:8px;color:#a0717f}
+.folder .sigil svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.folder.active-folder{border-color:#d8bfc8;background:#fdf8f7}
+.todohead{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 8px}
+.todohead h3{font-family:Georgia,"Times New Roman",serif;font-size:19px;font-weight:500;margin:0}
+.todohead span{font-size:10px;color:var(--muted)}
+.todo{margin-top:0}
+.task{align-items:flex-start}
+.task input{margin-top:2px;flex:none}
+.taskcopy{flex:1}
+.taskcopy b{display:block;font-size:13px}
+.taskcopy small{display:block;font-size:10px;color:var(--muted);margin-top:3px}
+.task.done .taskcopy b,.task.done .taskcopy small{text-decoration:line-through;color:#a38f95}
+.taskdel{border:0;background:transparent;color:var(--muted);font-size:18px;padding:0 2px}
+.listempty{text-align:center;padding:24px 10px;color:var(--muted)}
+.listempty .moon{display:block;font-size:28px;color:#a0717f;margin-bottom:6px}
+.task-sheet-title{margin:0 0 4px;font-family:Georgia,"Times New Roman",serif;font-size:25px;font-weight:500}
+.task-sheet-sub{font-size:11px;color:var(--muted)}
+.field select{width:100%;border:1px solid var(--line);border-radius:13px;background:#fff;padding:11px;color:var(--ink)}
+
+.event-date-preview{margin:4px 0 10px;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<div class="app">
+<section id="week" class="page active">
+<div class="top"><div><div class="kicker">Bloom Week</div><h1>Bonjour Francheska ♡</h1><div class="sub">Ton semainier, pensé autour de ta vraie vie.</div></div><button class="avatar" data-nav="settings">✦</button></div>
+<div class="hero" id="weekHero"><div class="weekhead"><div class="weektitle">17 — 23 août</div><div class="badge">Petite semaine · 20 h</div></div>
+<div class="days">
+<button class="day" data-d="17">LUN<b>17</b></button><button class="day" data-d="18">MAR<b>18</b></button><button class="day" data-d="19">MER<b>19</b></button><button class="day" data-d="20">JEU<b>20</b><span class="rel">Hier</span></button><button class="day active" data-d="21">VEN<b>21</b><span class="rel">Aujourd’hui</span></button><button class="day" data-d="22">SAM<b>22</b><span class="rel">Demain</span></button><button class="day" data-d="23">DIM<b>23</b></button>
+</div></div>
+<div class="section"><div class="section-title"><h2 id="focus">Aujourd’hui</h2><span id="focusDate">Vendredi 21 août</span></div><div class="board" id="board"><article class="card selected" data-card="21"><div class="cardhead"><b>Vendredi 21 <span class="relpill">Aujourd’hui</span></b><button class="plus">+</button></div><button class="event"><span class="time">18:30</span><i class="bar" style="background:var(--lav)"></i><span><b>Soirée Louange</b><small>Avec Aurélie · Église du Tampon</small></span><span>›</span></button></article><article class="card" data-card="17"><div class="cardhead"><b>Lundi 17</b><button class="plus">+</button></div><button class="event"><span class="time">10:00</span><i class="bar" style="background:var(--green)"></i><span><b>Récupérer les enfants</b><small>Début de la semaine de garde</small></span><span>›</span></button></article><article class="card" data-card="18"><div class="cardhead"><b>Mardi 18</b><button class="plus">+</button></div><button class="event"><span class="time">08:00</span><i class="bar" style="background:var(--green)"></i><span><b>Rentrée scolaire Noor</b><small>08:00 — 15:30</small></span><span>›</span></button></article><article class="card" data-card="19"><div class="cardhead"><b>Mercredi 19</b><button class="plus">+</button></div><button class="event"><span class="time">jour entier</span><i class="bar" style="background:var(--green)"></i><span><b>Semaine de garde avec les enfants</b><small>Les enfants sont avec toi</small></span><span>›</span></button><button class="event"><span class="time">07:30</span><i class="bar" style="background:var(--green)"></i><span><b>Rentrée scolaire Elijah</b><small>Rentrée scolaire</small></span><span>›</span></button><button class="event"><span class="time">10:00</span><i class="bar" style="background:var(--rose)"></i><span><b>Avec ❤️</b><small>Journée avec Vincent</small></span><span>›</span></button></article><article class="card" data-card="20"><div class="cardhead"><b>Jeudi 20 <span class="relpill">Hier</span></b><button class="plus">+</button></div><button class="event"><span class="time">20:30</span><i class="bar" style="background:var(--blue)"></i><span><b>EHPAD</b><small>Père Favron · nuit</small></span><span>›</span></button></article><article class="card" data-card="22"><div class="cardhead"><b>Samedi 22 <span class="relpill">Demain</span></b><button class="plus">+</button></div><button class="event"><span class="time">jour entier</span><i class="bar" style="background:var(--green)"></i><span><b>Semaine de garde avec les enfants</b><small>Les enfants sont avec toi</small></span><span>›</span></button></article><article class="card" data-card="23"><div class="cardhead"><b>Dimanche 23</b><button class="plus">+</button></div><button class="event"><span class="time">jour entier</span><i class="bar" style="background:var(--green)"></i><span><b>Semaine de garde avec les enfants</b><small>Les enfants sont avec toi</small></span><span>›</span></button></article></div></div>
+</section>
+
+<section id="lists" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Mes listes ♡</h2><div class="sub">Ajoute une tâche en quelques secondes.</div></div><button class="back" data-nav="week">‹</button></div>
+
+<div class="listbar">
+<input id="search" class="search" placeholder="Rechercher une tâche…">
+<button class="addtask" id="addTaskBtn">＋ Tâche</button>
+</div>
+
+<div class="folders">
+<button class="folder active-folder" data-folder="all"><span class="sigil"><svg viewBox="0 0 48 48"><path d="M9 25c6-13 24-13 30 0-6 13-24 13-30 0Z"/><circle cx="24" cy="25" r="5"/><path d="M24 7v5M24 38v4M8 14l4 3M40 14l-4 3"/></svg></span><b>Toutes</b><small>Vue générale</small></button>
+<button class="folder" data-folder="bloom"><span class="sigil"><svg viewBox="0 0 48 48"><path d="M24 8c5 6 7 11 0 17-7-6-5-11 0-17Z"/><path d="M13 17c8 1 12 5 11 13-8-1-12-5-11-13Z"/><path d="M35 17c-8 1-12 5-11 13 8-1 12-5 11-13Z"/><path d="M24 31v9"/></svg></span><b>Cosmic Bloom</b><small>Marque & production</small></button>
+<button class="folder" data-folder="work"><span class="sigil"><svg viewBox="0 0 48 48"><path d="M24 7c0 10-8 15-8 23a8 8 0 0 0 16 0c0-8-8-13-8-23Z"/><path d="M19 31c2 3 8 3 10 0"/></svg></span><b>Père Favron</b><small>Travail</small></button>
+<button class="folder" data-folder="divorce"><span class="sigil"><svg viewBox="0 0 48 48"><path d="M10 14c8-7 20-7 28 0"/><path d="M13 17l11 21 11-21"/><path d="M24 10v28"/></svg></span><b>Divorce</b><small>Procédure & documents</small></button>
+<button class="folder" data-folder="home"><span class="sigil"><svg viewBox="0 0 48 48"><path d="M8 24 24 10l16 14"/><path d="M13 22v16h22V22"/><path d="M20 38V27h8v11"/><path d="M35 10c3 0 5 2 5 5-3 0-5-2-5-5Z"/></svg></span><b>Logement</b><small>Déménagement & social</small></button>
+<button class="folder" data-folder="finance"><span class="sigil"><svg viewBox="0 0 48 48"><path d="M24 7c7 6 10 12 10 19a10 10 0 0 1-20 0c0-7 3-13 10-19Z"/><path d="M20 22c2-2 8-2 8 2 0 5-8 2-8 7 0 4 6 4 8 2"/><path d="M24 18v18"/></svg></span><b>Finances</b><small>Budget & démarches</small></button>
+<button class="folder" data-folder="kids"><span class="sigil"><svg viewBox="0 0 48 48"><path d="M24 13c3-5 9-6 13-2 4 4 3 10-1 14L24 38 12 25c-4-4-5-10-1-14 4-4 10-3 13 2Z"/><path d="M20 26c2 2 6 2 8 0"/></svg></span><b>Enfants / Famille</b><small>École & garde</small></button>
+<button class="folder" data-folder="personal"><span class="sigil"><svg viewBox="0 0 48 48"><path d="M30 8a14 14 0 1 0 10 24A16 16 0 0 1 30 8Z"/><path d="M35 10l1 4 4 1-4 1-1 4-1-4-4-1 4-1 1-4Z"/><path d="M12 11l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3Z"/></svg></span><b>Vie perso</b><small>Rendez-vous & projets</small></button>
+</div>
+
+<div class="todohead"><h3 id="listTitle">Toutes mes tâches</h3><span id="taskCount"></span></div>
+<div class="todo" id="todo"></div></section>
+
+<section id="month" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Mon mois ♡</h2><div class="sub">Swipe entre la frise et l’agenda.</div></div><button class="back" data-nav="week">‹</button></div>
+<div class="trackwrap" id="monthSwipe"><div class="track" id="track">
+<div class="pane"><div class="caption">Frise verticale</div><div class="mday"><h3>Mardi 18</h3><div class="mline">Rentrée scolaire Noor · 08:00–15:30</div></div><div class="mday"><h3>Mercredi 19</h3><div class="mline">Rentrée scolaire Elijah · 07:30</div><div class="mline">Avec ❤️ · 10:00</div></div><div class="mday"><h3>Vendredi 21</h3><div class="mline">Soirée Louange · 18:30</div></div></div>
+<div class="pane"><div class="caption">Agenda par semaines</div><div class="mday"><h3>17 — 23 août</h3><div class="mline">18 · Rentrée Noor</div><div class="mline">19 · Rentrée Elijah</div><div class="mline">19 · Avec ❤️</div><div class="mline">21 · Soirée Louange</div></div><div class="mday"><h3>24 — 30 août</h3><div class="mline">24 · 🚒 Vincent en garde</div><div class="mline">26 · RDV Gynéco</div></div></div>
+</div><div class="pager"><button id="p0" class="active"></button><button id="p1"></button></div></div></section>
+
+<section id="settings" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Réglages ♡</h2></div><button class="back" data-nav="week">‹</button></div><div class="vacbox"><div class="field"><label>Prénom</label><input value="Francheska"></div><div class="field"><label>Notes</label><textarea></textarea></div><button class="btn primary" id="settingsSave">Enregistrer</button></div></section>
+
+<section id="vac" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Vacances scolaires ♡</h2><div class="sub">Île de La Réunion · organisation familiale.</div></div><button class="back" data-nav="week">›</button></div>
+<div class="vacbox">
+<div class="vacrow"><div class="vline"></div><div><b>Vacances d’octobre 2026</b><small>10 oct. → 26 oct. 2026</small></div><span class="tag">16 j</span></div>
+<div class="vacrow"><div class="vline"></div><div><b>Été austral</b><small>19 déc. 2026 → 1 fév. 2027</small></div><span class="tag">6 sem.</span></div>
+<div class="vacrow"><div class="vline"></div><div><b>Vacances de mars 2027</b><small>16 mars → 30 mars 2027</small></div><span class="tag">2 sem.</span></div>
+<div class="vacrow"><div class="vline"></div><div><b>Vacances de mai 2027</b><small>5 mai → 19 mai 2027</small></div><span class="tag">2 sem.</span></div>
+<div class="vacrow"><div class="vline"></div><div><b>Hiver austral 2027</b><small>à partir du 3 juil. 2027</small></div><span class="tag">fin année</span></div>
+</div>
+<div class="vacbox"><div class="field"><label>Organisation & idées</label><textarea placeholder="Activités, garde, voyages, budget, réservations…"></textarea></div><button class="btn primary" id="vacSave">Enregistrer mes notes</button></div>
+</section>
+</div>
+
+<nav class="nav"><button data-nav="week" class="active"><span>▦</span>Semaine</button><button data-nav="lists"><span>✓</span>Listes</button><button data-nav="add" class="bigplus">+</button><button data-nav="month"><span>▣</span>Mois</button><button data-nav="settings"><span>⚙︎</span>Réglages</button></nav>
+
+
+<div class="modal" id="taskModal"><div class="sheet">
+<div class="task-sheet-title">Nouvelle tâche ♡</div>
+<div class="task-sheet-sub">Ici tu ajoutes une tâche, pas un événement d’agenda.</div>
+<div class="field"><label>Que veux-tu faire ?</label><input id="taskTitle" placeholder="Ex. Relancer mon avocat"></div>
+<div class="field"><label>Dossier</label><select id="taskFolder">
+<option value="bloom">Cosmic Bloom</option><option value="work">Père Favron</option><option value="divorce">Divorce</option><option value="home">Logement</option><option value="finance">Finances</option><option value="kids">Enfants / Famille</option><option value="personal">Vie perso</option>
+</select></div>
+<div class="field"><label>Note facultative</label><textarea id="taskNote" rows="3" placeholder="Détail utile, document, téléphone…"></textarea></div>
+<div class="row"><button class="btn" id="cancelTask">Annuler</button><button class="btn primary" id="saveTask">Ajouter la tâche</button></div>
+</div></div>
+
+<div class="modal" id="modal"><div class="sheet">
+<h2>Nouvel événement d’agenda</h2>
+<div class="event-date-preview" id="eventDatePreview"></div>
+<div class="field"><label>Titre</label><input id="title" placeholder="Ex. Rendez-vous médecin"></div>
+<div class="row">
+<div class="field"><label>Heure</label><input id="eventTime" type="time"></div>
+<div class="field"><label>Fin (facultatif)</label><input id="eventEnd" type="time"></div>
+</div>
+<div class="field"><label>Note (facultatif)</label><textarea id="eventNote" rows="3" placeholder="Lieu, personne, détail utile…"></textarea></div>
+<div class="row"><button class="btn" id="cancel">Annuler</button><button class="btn primary" id="save">Enregistrer</button></div>
+</div></div>
+<div class="toast" id="toast">Événement enregistré ✓</div>
+
+<script>
+(function(){
+'use strict';
+var pages=['week','lists','month','settings','vac'];
+function show(n){if(n==='add'){modal.classList.add('show');return}pages.forEach(function(p){document.getElementById(p).classList.toggle('active',p===n)});document.querySelectorAll('[data-nav]').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-nav')===n)});window.scrollTo(0,0)}
+document.querySelectorAll('[data-nav]').forEach(function(b){b.addEventListener('click',function(){show(this.getAttribute('data-nav'))})});
+
+var dayOrder=['17','18','19','20','21','22','23'];
+var weekYear=2026, weekMonth=7;
+var selectedDay=null;
+
+function stripDate(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+function dateForDay(day){return new Date(weekYear,weekMonth,Number(day))}
+function sameDate(a,b){return a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
+function relationFor(d){
+  var t=stripDate(new Date()), y=new Date(t), tm=new Date(t);
+  y.setDate(y.getDate()-1);tm.setDate(tm.getDate()+1);
+  if(sameDate(d,y))return'Hier';
+  if(sameDate(d,t))return"Aujourd’hui";
+  if(sameDate(d,tm))return'Demain';
+  return'';
+}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+function formatLong(d){return cap(new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long'}).format(d))}
+function formatWeekday(d){return cap(new Intl.DateTimeFormat('fr-FR',{weekday:'long'}).format(d))}
+
+function reorder(selected){
+  var board=document.getElementById('board');
+  dayOrder.forEach(function(d){
+    if(d===selected)return;
+    var c=board.querySelector('[data-card="'+d+'"]');
+    if(c)board.appendChild(c);
+  });
+  var sel=board.querySelector('[data-card="'+selected+'"]');
+  if(sel)board.insertBefore(sel,board.firstChild);
+}
+
+function refreshRelativeLabels(){
+  document.querySelectorAll('.day').forEach(function(b){
+    var d=dateForDay(b.getAttribute('data-d')),r=relationFor(d),old=b.querySelector('.rel');
+    if(old)old.remove();
+    if(r){var s=document.createElement('span');s.className='rel';s.textContent=r;b.appendChild(s)}
+  });
+  document.querySelectorAll('[data-card]').forEach(function(card){
+    var d=dateForDay(card.getAttribute('data-card')),r=relationFor(d),head=card.querySelector('.cardhead b');
+    if(head)head.innerHTML=formatWeekday(d)+' '+d.getDate()+(r?' <span class="relpill">'+r+'</span>':'');
+  });
+}
+
+function selectDay(day,scroll){
+  selectedDay=String(day);
+  document.querySelectorAll('.day').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-d')===selectedDay)});
+  document.querySelectorAll('.card').forEach(function(c){c.classList.toggle('selected',c.getAttribute('data-card')===selectedDay)});
+  var d=dateForDay(selectedDay),r=relationFor(d),card=document.querySelector('[data-card="'+selectedDay+'"]');
+  document.getElementById('focus').textContent=r||formatWeekday(d);
+  document.getElementById('focusDate').textContent=formatLong(d);
+  if(card){reorder(selectedDay);if(scroll)card.scrollIntoView({behavior:'smooth',block:'start'})}
+}
+
+refreshRelativeLabels();
+var todayLocal=stripDate(new Date());
+if(todayLocal.getFullYear()===weekYear&&todayLocal.getMonth()===weekMonth&&todayLocal.getDate()>=17&&todayLocal.getDate()<=23){
+  selectDay(String(todayLocal.getDate()),false);
+}else{
+  selectDay('19',false);
+}
+
+document.querySelectorAll('.day').forEach(function(b){
+  b.addEventListener('click',function(){selectDay(this.getAttribute('data-d'),true)})
+});
+
+
+var DEFAULT_TASKS=[
+ {folder:'bloom',title:'Finaliser les dossiers techniques',note:'',done:false},
+ {folder:'bloom',title:'Préparer le rendez-vous couturière',note:'',done:false},
+ {folder:'work',title:'Vérifier mes prochains horaires',note:'',done:false},
+ {folder:'divorce',title:'Suivre les documents demandés',note:'',done:false},
+ {folder:'home',title:'Relancer Action Logement',note:'',done:false},
+ {folder:'finance',title:'Faire le point budget',note:'',done:false},
+ {folder:'kids',title:'Préparer la rentrée des enfants',note:'',done:false},
+ {folder:'personal',title:'Préparer le Piton des Neiges',note:'',done:false}
+];
+var folderNames={all:'Toutes mes tâches',bloom:'Cosmic Bloom',work:'Père Favron',divorce:'Divorce',home:'Logement',finance:'Finances',kids:'Enfants / Famille',personal:'Vie perso'};
+var TASKS;try{TASKS=JSON.parse(localStorage.getItem('bloom_tasks_v2')||'null')||DEFAULT_TASKS}catch(e){TASKS=DEFAULT_TASKS.slice()}
+var currentFolder='all';
+function saveTasks(){try{localStorage.setItem('bloom_tasks_v2',JSON.stringify(TASKS))}catch(e){}}
+function escTask(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function renderTasks(){
+ var q=(document.getElementById('search').value||'').toLowerCase(),todo=document.getElementById('todo');todo.innerHTML='';
+ document.getElementById('listTitle').textContent=folderNames[currentFolder]||'Mes tâches';
+ var shown=0;
+ TASKS.forEach(function(t,index){
+   if(currentFolder!=='all'&&t.folder!==currentFolder)return;
+   if((t.title+' '+(t.note||'')).toLowerCase().indexOf(q)<0)return;
+   shown++;
+   var row=document.createElement('div');row.className='task'+(t.done?' done':'');
+   row.innerHTML='<input type="checkbox" '+(t.done?'checked':'')+'><div class="taskcopy"><b>'+escTask(t.title)+'</b>'+(t.note?'<small>'+escTask(t.note)+'</small>':'')+'</div><button class="taskdel" aria-label="Supprimer">×</button>';
+   row.querySelector('input').onchange=function(){t.done=this.checked;saveTasks();renderTasks()};
+   row.querySelector('.taskdel').onclick=function(){if(confirm('Supprimer cette tâche ?')){TASKS.splice(index,1);saveTasks();renderTasks()}};
+   todo.appendChild(row);
+ });
+ document.getElementById('taskCount').textContent=shown+(shown>1?' tâches':' tâche');
+ if(!shown)todo.innerHTML='<div class="listempty"><span class="moon">☾ ✦</span>Aucune tâche ici pour le moment.</div>';
+}
+document.querySelectorAll('[data-folder]').forEach(function(b){
+ b.onclick=function(){
+   currentFolder=this.getAttribute('data-folder');
+   document.querySelectorAll('[data-folder]').forEach(function(x){x.classList.remove('active-folder')});
+   this.classList.add('active-folder');
+   renderTasks();
+ };
+});
+document.getElementById('search').oninput=renderTasks;
+var taskModal=document.getElementById('taskModal');
+document.getElementById('addTaskBtn').onclick=function(){
+ document.getElementById('taskTitle').value='';
+ document.getElementById('taskNote').value='';
+ document.getElementById('taskFolder').value=currentFolder==='all'?'personal':currentFolder;
+ taskModal.classList.add('show');
+};
+document.getElementById('cancelTask').onclick=function(){taskModal.classList.remove('show')};
+document.getElementById('saveTask').onclick=function(){
+ var title=document.getElementById('taskTitle').value.trim();
+ if(!title){alert('Écris simplement la tâche que tu veux ajouter.');return}
+ var folder=document.getElementById('taskFolder').value;
+ TASKS.unshift({folder:folder,title:title,note:document.getElementById('taskNote').value.trim(),done:false});
+ saveTasks();currentFolder=folder;taskModal.classList.remove('show');
+ document.querySelectorAll('[data-folder]').forEach(function(x){x.classList.toggle('active-folder',x.getAttribute('data-folder')===currentFolder)});
+ renderTasks();
+};
+renderTasks();
+
+var modal=document.getElementById('modal');
+var eventTargetDay=null;
+var SAVED_EVENTS;try{SAVED_EVENTS=JSON.parse(localStorage.getItem('bloom_week_events_v1')||'[]')}catch(e){SAVED_EVENTS=[]}
+
+function saveEventsStore(){try{localStorage.setItem('bloom_week_events_v1',JSON.stringify(SAVED_EVENTS))}catch(e){}}
+function safeEventText(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+
+function addEventToCard(ev){
+  var card=document.querySelector('[data-card="'+ev.day+'"]');
+  if(!card||card.querySelector('[data-saved-id="'+ev.id+'"]'))return;
+  var btn=document.createElement('button');btn.className='event';btn.setAttribute('data-saved-id',ev.id);
+  var sub='';
+  if(ev.time&&ev.end)sub=ev.time+' — '+ev.end;
+  if(ev.note)sub+=(sub?' · ':'')+safeEventText(ev.note);
+  if(!sub)sub='Événement ajouté';
+  btn.innerHTML='<span class="time">'+safeEventText(ev.time||'jour entier')+'</span><i class="bar" style="background:var(--rose)"></i><span><b>'+safeEventText(ev.title)+'</b><small>'+sub+'</small></span><span>›</span>';
+  card.appendChild(btn);
+}
+SAVED_EVENTS.forEach(addEventToCard);
+
+function openEventModal(day){
+  eventTargetDay=String(day||selectedDay||'21');
+  var d=dateForDay(eventTargetDay);
+  document.getElementById('eventDatePreview').textContent=formatLong(d);
+  document.getElementById('title').value='';
+  document.getElementById('eventTime').value='';
+  document.getElementById('eventEnd').value='';
+  document.getElementById('eventNote').value='';
+  modal.classList.add('show');
+}
+document.querySelectorAll('.plus').forEach(function(b){
+  b.onclick=function(e){
+    e.stopPropagation();
+    var card=this.closest('[data-card]');
+    openEventModal(card?card.getAttribute('data-card'):selectedDay);
+  };
+});
+document.getElementById('cancel').onclick=function(){modal.classList.remove('show')};
+document.getElementById('save').onclick=function(){
+  var title=document.getElementById('title').value.trim();
+  if(!title){alert('Ajoute un titre à ton événement.');return}
+  var ev={id:'e'+Date.now(),day:eventTargetDay||selectedDay||'21',title:title,time:document.getElementById('eventTime').value,end:document.getElementById('eventEnd').value,note:document.getElementById('eventNote').value.trim()};
+  SAVED_EVENTS.push(ev);saveEventsStore();addEventToCard(ev);
+  modal.classList.remove('show');selectDay(ev.day,false);flash();
+};
+var navAdd=document.querySelector('[data-nav="add"]');
+if(navAdd){navAdd.onclick=function(e){e.preventDefault();openEventModal(selectedDay)}}
+document.getElementById('settingsSave').onclick=flash;document.getElementById('vacSave').onclick=flash;
+
+var pane=0,track=document.getElementById('track'),p0=document.getElementById('p0'),p1=document.getElementById('p1');function setPane(n){pane=n;track.style.transform='translateX('+(-50*n)+'%)';p0.classList.toggle('active',n===0);p1.classList.toggle('active',n===1)}p0.onclick=function(){setPane(0)};p1.onclick=function(){setPane(1)};
+var sx=0,sy=0,sw=document.getElementById('monthSwipe');sw.addEventListener('touchstart',function(e){sx=e.changedTouches[0].clientX;sy=e.changedTouches[0].clientY},{passive:true});sw.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy))setPane(dx<0?1:0)},{passive:true});
+
+var wx=0,wy=0,week=document.getElementById('week');week.addEventListener('touchstart',function(e){wx=e.changedTouches[0].clientX;wy=e.changedTouches[0].clientY},{passive:true});week.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-wx,dy=e.changedTouches[0].clientY-wy;if(dx<-90&&Math.abs(dx)>Math.abs(dy))show('vac')},{passive:true});
+var vx=0,vy=0,vac=document.getElementById('vac');vac.addEventListener('touchstart',function(e){vx=e.changedTouches[0].clientX;vy=e.changedTouches[0].clientY},{passive:true});vac.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-vx,dy=e.changedTouches[0].clientY-vy;if(dx>90&&Math.abs(dx)>Math.abs(dy))show('week')},{passive:true});
+
+function flash(){var t=document.getElementById('toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show')},1200)}
+})();
+</script>
+</body>
+</html>
