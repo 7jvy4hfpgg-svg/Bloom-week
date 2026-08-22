@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f0ed">
+<title>Bloom Week — Sauvegarde</title>
+<style>
+:root{
+  --bg:#f6f0ed;--panel:#fffaf7;--ink:#4a3a3f;--muted:#8d7a80;
+  --line:#eadfda;--accent:#9d6877;--soft:#ead8df;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh}
+.wrap{max-width:460px;margin:auto;padding:28px 18px 48px}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:32px;margin:7px 0 8px}
+.sub{font-size:14px;color:var(--muted);line-height:1.45}
+.card{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 12px 30px rgba(80,55,64,.07)}
+.status{margin-top:10px;padding:12px 14px;border-radius:16px;background:#f7eff1;color:#7d5662;font-size:13px;line-height:1.4}
+.btn{width:100%;border:1px solid var(--line);background:#fff;border-radius:15px;padding:14px;color:var(--ink);font-size:16px;margin-top:10px}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
+.small{font-size:11px;color:var(--muted);line-height:1.45;margin-top:12px}
+.keys{margin-top:12px;font-size:12px;color:var(--muted);word-break:break-word}
+.ok{color:#5f7c66}.warn{color:#9b6a4e}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Bloom Week</div>
+  <h1>Sauvegarde ♡</h1>
+  <div class="sub">Cette page ne modifie pas ton agenda. Elle sert uniquement à copier les données déjà enregistrées dans Bloom Week.</div>
+
+  <div class="card">
+    <b>1. Vérifier les données détectées</b>
+    <div id="status" class="status">Analyse du stockage…</div>
+    <div id="keys" class="keys"></div>
+
+    <button id="exportBtn" class="btn primary">💾 Télécharger ma sauvegarde</button>
+    <button id="copyBtn" class="btn">📋 Copier la sauvegarde</button>
+
+    <div class="small">
+      Important : pour voir les mêmes données que Bloom Week, ce fichier doit être ouvert depuis le <b>même site GitHub Pages</b> que ton application, par exemple :
+      <br><br><b>…/Bloom-week/backup.html</b>
+      <br><br>Ne l’ouvre pas seulement depuis l’app Fichiers de l’iPhone, sinon le navigateur peut utiliser un stockage différent.
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  function collect(){
+    var all={};
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i);
+      all[k]=localStorage.getItem(k);
+    }
+    return all;
+  }
+
+  function summary(data){
+    var keys=Object.keys(data);
+    var bloomKeys=keys.filter(function(k){return /bloom/i.test(k)});
+    var status=document.getElementById('status');
+    var keysEl=document.getElementById('keys');
+
+    if(!keys.length){
+      status.innerHTML='<span class="warn"><b>Aucune donnée locale détectée.</b></span><br>Si Bloom Week contient pourtant des événements, ouvre cette page depuis la même adresse GitHub Pages que l’application.';
+      keysEl.textContent='';
+      return;
+    }
+
+    status.innerHTML='<span class="ok"><b>'+keys.length+' élément(s) de stockage détecté(s).</b></span><br>'+bloomKeys.length+' clé(s) semblent appartenir à Bloom Week.';
+    keysEl.textContent=bloomKeys.length ? 'Clés Bloom Week : '+bloomKeys.join(' · ') : 'Clés détectées : '+keys.join(' · ');
+  }
+
+  function payload(){
+    return {
+      app:'Bloom Week',
+      type:'localStorage-backup',
+      exportedAt:new Date().toISOString(),
+      origin:location.origin,
+      href:location.href,
+      localStorage:collect()
+    };
+  }
+
+  function download(){
+    var data=JSON.stringify(payload(),null,2);
+    var blob=new Blob([data],{type:'application/json'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download='BloomWeek-sauvegarde-'+new Date().toISOString().slice(0,10)+'.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function(){URL.revokeObjectURL(url)},1500);
+  }
+
+  async function copy(){
+    var text=JSON.stringify(payload(),null,2);
+    try{
+      await navigator.clipboard.writeText(text);
+      alert('Sauvegarde copiée dans le presse-papiers.');
+    }catch(e){
+      var ta=document.createElement('textarea');
+      ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+      alert('Sauvegarde copiée dans le presse-papiers.');
+    }
+  }
+
+  document.getElementById('exportBtn').addEventListener('click',download);
+  document.getElementById('copyBtn').addEventListener('click',copy);
+
+  summary(collect());
+})();
+</script>
+</body>
+</html>
