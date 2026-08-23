@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bloom Week — Sauvegarde locale</title>
+<meta name="theme-color" content="#f6f0ed">
+<style>
+:root{--bg:#f6f0ed;--panel:#fffaf7;--ink:#4a3a3f;--muted:#8d7a80;--line:#eadfda;--accent:#9d6877}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:460px;margin:auto;min-height:100vh;padding:28px 18px 48px}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:32px;font-weight:500;margin:7px 0 8px}
+p{color:var(--muted);line-height:1.5}
+.card{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:18px}
+.status{padding:13px;border-radius:16px;background:#f7eff1;color:#7d5662;font-size:13px;line-height:1.45}
+.btn{width:100%;margin-top:11px;padding:14px;border:1px solid var(--line);border-radius:15px;background:#fff;color:var(--ink);font-size:16px}
+.btn.primary{background:var(--accent);color:white;border-color:var(--accent);font-weight:700}
+.small{font-size:11px;color:var(--muted);margin-top:12px;line-height:1.45}
+code{font-size:11px;word-break:break-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="kicker">Bloom Week</div>
+<h1>Sauvegarde ♡</h1>
+<p>Ce fichier est indépendant de ton agenda. Il ne modifie aucune date, aucun événement et aucun réglage de Bloom Week.</p>
+<div class="card">
+  <div id="status" class="status">Analyse du stockage local…</div>
+  <button id="download" class="btn primary">💾 Télécharger la sauvegarde détectée</button>
+  <button id="copy" class="btn">📋 Copier la sauvegarde</button>
+  <div class="small">
+    Si cette page indique « aucune donnée », cela signifie généralement qu’elle a été ouverte dans un contexte différent de l’app installée sur l’iPhone. Le fichier n’efface rien.
+  </div>
+</div>
+</div>
+<script>
+(function(){
+  function collect(){
+    var data={};
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i);
+      data[k]=localStorage.getItem(k);
+    }
+    return data;
+  }
+  function payload(){
+    return {
+      app:"Bloom Week",
+      exportedAt:new Date().toISOString(),
+      origin:location.origin,
+      href:location.href,
+      storage:collect()
+    };
+  }
+  function refresh(){
+    var d=collect(), keys=Object.keys(d), bloom=keys.filter(function(k){return /bloom/i.test(k)});
+    var s=document.getElementById('status');
+    if(!keys.length){
+      s.innerHTML="<b>Aucune donnée locale détectée.</b><br>Cette page n’a rien modifié.";
+    }else{
+      s.innerHTML="<b>"+keys.length+" élément(s) détecté(s)</b><br>"+bloom.length+" clé(s) semblent appartenir à Bloom Week.";
+    }
+  }
+  document.getElementById('download').onclick=function(){
+    var text=JSON.stringify(payload(),null,2);
+    var blob=new Blob([text],{type:'application/json'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download='BloomWeek-sauvegarde-'+new Date().toISOString().slice(0,10)+'.json';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(function(){URL.revokeObjectURL(url)},1200);
+  };
+  document.getElementById('copy').onclick=async function(){
+    var text=JSON.stringify(payload(),null,2);
+    try{await navigator.clipboard.writeText(text);alert("Sauvegarde copiée.");}
+    catch(e){alert("Copie impossible dans ce navigateur.");}
+  };
+  refresh();
+})();
+</script>
+</body>
+</html>
