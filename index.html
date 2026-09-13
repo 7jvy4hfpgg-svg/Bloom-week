@@ -115,6 +115,49 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
 .iconchoice{height:52px;border:1px solid var(--line);border-radius:14px;background:#fffaf7;color:#9d6877;font-size:25px}
 .iconchoice.selected{border-color:var(--accent);background:#f4e7eb;box-shadow:0 0 0 1px var(--accent)}
 
+
+/* --- V9 : mois aéré + étoiles + couleurs personnalisables --- */
+.eventrow{grid-template-columns:22px 30px 1fr}
+.monthstar{width:28px;height:28px;border:1px solid #eadfda;background:#fffaf7;border-radius:10px;color:#c3adb4;font-size:18px;line-height:1;padding:0;display:flex;align-items:center;justify-content:center}
+.monthstar.active{color:#c99142;background:#fff1c9;border-color:#e8ca8d;box-shadow:0 4px 12px rgba(188,139,62,.18)}
+.monthstar:active{transform:scale(.96)}
+.monthhero{padding:14px 12px 16px}
+.monthhint{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.35}
+.monthviewbar{display:flex;gap:7px;align-items:center;margin:8px 0 12px;flex-wrap:wrap}
+.monthfilter,.monthpalettebtn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:7px 10px;font-size:10px}
+.monthfilter.active{background:#f1e4e8;border-color:#d8bfc8;color:#7d5662;font-weight:800}
+.monthpalettebtn{margin-left:auto;color:var(--accent);font-weight:700}
+.monthpalette{display:none;margin:0 0 12px;padding:12px;border:1px solid var(--line);border-radius:18px;background:#fffaf7}
+.monthpalette.show{display:block}
+.palettehead{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:10px}
+.palettehead b{font-family:Georgia,"Times New Roman",serif;font-size:16px}
+.palettehead span{font-size:9px;color:var(--muted)}
+.palettegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.palettegrid label{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid #eee3df;background:#fff;border-radius:12px;padding:8px;font-size:10px}
+.palettegrid input[type=color]{width:34px;height:28px;border:0;background:transparent;padding:0}
+.monthgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}
+.monthdow{text-align:center;font-size:9px;color:#806f74;padding:8px 0;font-weight:800;letter-spacing:.04em}
+.monthcell{min-height:88px;border:1px solid #eadfda;border-radius:12px;background:#fffdfb;padding:6px 4px;overflow:hidden}
+.monthcell.other{opacity:.35}
+.monthcell.today{border:2px solid #c55f70;box-shadow:none}
+.monthnum{font-size:11px;font-weight:800;margin-bottom:5px;display:flex;align-items:center;justify-content:center;width:23px;height:23px;border-radius:99px}
+.monthcell.today .monthnum{background:#c55f70;color:#fff}
+.mchip{display:block;width:100%;border:0;border-left:4px solid var(--chip,#bb7b81);background:var(--chipbg,#f8e7eb);border-radius:7px;padding:4px 4px;margin:4px 0;font-size:8px;line-height:1.15;text-align:left;white-space:normal;overflow:hidden;color:#493a3f;font-weight:700}
+.mchip .mtime{display:block;font-size:7px;font-weight:600;opacity:.75;margin-bottom:1px}
+.monthmore{font-size:8px;color:var(--muted);padding:2px 3px}
+.monthempty{grid-column:1/-1;text-align:center;color:var(--muted);font-size:11px;padding:18px 8px}
+.monthlegend{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.monthlegend span{font-size:9px;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 7px;display:flex;align-items:center;gap:5px}
+.monthlegend i{width:8px;height:8px;border-radius:99px;display:inline-block}
+
+
+/* --- V10 : tâches réalisées dans le semainier --- */
+.completed-tasks{margin-top:9px;padding-top:8px;border-top:1px dashed #eadfda}
+.completed-title{font-size:10px;font-weight:800;color:#a06a7c;text-transform:uppercase;letter-spacing:.08em;margin:2px 0 5px}
+.completed-task{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:12px;color:#6f5961}
+.completed-check{width:18px;height:18px;min-width:18px;border-radius:50%;background:#e8a7bf;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;line-height:1;margin-top:1px}
+.completed-copy{flex:1;line-height:1.3}.completed-copy b{font-size:12px;font-weight:650}.completed-copy small{display:block;color:var(--muted);font-size:9px;margin-top:2px}.completed-time{font-size:9px;color:#a38f95;white-space:nowrap;margin-top:2px}
+
 </style>
 </head>
 <body>
@@ -132,8 +175,8 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
 <div class="hero" id="weekHero">
   <div class="weekhead">
     <div>
-      <div class="weektitle" id="weekTitle">17 — 23 août</div>
-      <div class="sub" id="weekSubtitle">Petite semaine · 20 h</div>
+      <div class="weektitle" id="weekTitle">Chargement…</div>
+      <div class="sub" id="weekSubtitle">Calendrier dynamique</div>
     </div>
     <div class="weektools">
       <button id="prevWeek" aria-label="Semaine précédente">‹</button>
@@ -142,107 +185,20 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
     </div>
   </div>
 
-  <div class="days" id="weekDays">
-    <button class="day" data-date="2026-08-17">LUN<b>17</b></button>
-    <button class="day" data-date="2026-08-18">MAR<b>18</b></button>
-    <button class="day" data-date="2026-08-19">MER<b>19</b></button>
-    <button class="day" data-date="2026-08-20">JEU<b>20</b></button>
-    <button class="day" data-date="2026-08-21">VEN<b>21</b></button>
-    <button class="day" data-date="2026-08-22">SAM<b>22</b><span class="rel">Hier</span></button>
-    <button class="day active" data-date="2026-08-23">DIM<b>23</b><span class="rel">Aujourd’hui</span></button>
-  </div>
+  <div class="days" id="weekDays"></div>
 </div>
 
 <div class="section">
   <div class="section-title">
     <h2 id="focus">Aujourd’hui</h2>
-    <span id="focusDate">Dimanche 23 août 2026</span>
+    <span id="focusDate"></span>
   </div>
 
-  <div class="board" id="board">
-    <article class="card" data-date="2026-08-21">
-      <div class="cardhead">
-        <b>Vendredi 21</b>
-        <button class="plus" aria-label="Ajouter">+</button>
-      </div>
-      <button class="event cat-shiftend">
-        <span class="time">06:30</span><i class="bar"></i>
-        <span><b>Fin de nuit</b><small>Fin de poste EHPAD</small></span><span>›</span>
-      </button>
-      <button class="event cat-kids">
-        <span class="time">jour entier</span><i class="bar"></i>
-        <span><b>Semaine de garde avec les enfants</b><small>Les enfants sont avec toi</small></span><span>›</span>
-      </button>
-      <button class="event cat-leisure">
-        <span class="time">18:30</span><i class="bar"></i>
-        <span><b>Soirée Louange</b><small>Personnel</small></span><span>›</span>
-      </button>
-    </article>
+  <div class="board" id="board"></div>
 
-    <article class="card" data-date="2026-08-17">
-      <div class="cardhead"><b>Lundi 17</b><button class="plus" aria-label="Ajouter">+</button></div>
-      <button class="event cat-kids">
-        <span class="time">10:00</span><i class="bar"></i>
-        <span><b>Récupérer les enfants</b><small>Début de la semaine de garde</small></span><span>›</span>
-      </button>
-      <button class="event cat-personal">
-        <span class="time">14:00</span><i class="bar"></i>
-        <span><b>CMPEA Noor</b><small>Rendez-vous Noor</small></span><span>›</span>
-      </button>
-    </article>
-
-    <article class="card" data-date="2026-08-18">
-      <div class="cardhead"><b>Mardi 18</b><button class="plus" aria-label="Ajouter">+</button></div>
-      <button class="event cat-kids">
-        <span class="time">07:30</span><i class="bar"></i>
-        <span><b>Rentrée scolaire Noor</b><small>Rentrée scolaire</small></span><span>›</span>
-      </button>
-    </article>
-
-    <article class="card" data-date="2026-08-19">
-      <div class="cardhead"><b>Mercredi 19</b><button class="plus" aria-label="Ajouter">+</button></div>
-      <button class="event cat-kids">
-        <span class="time">jour entier</span><i class="bar"></i>
-        <span><b>Semaine de garde avec les enfants</b><small>Les enfants sont avec toi</small></span><span>›</span>
-      </button>
-      <button class="event cat-kids">
-        <span class="time">07:30</span><i class="bar"></i>
-        <span><b>Rentrée scolaire Elijah</b><small>Rentrée scolaire</small></span><span>›</span>
-      </button>
-      <button class="event cat-personal">
-        <span class="time">10:00</span><i class="bar"></i>
-        <span><b>Avec ❤️</b><small>Personnel</small></span><span>›</span>
-      </button>
-    </article>
-
-    <article class="card" data-date="2026-08-20">
-      <div class="cardhead"><b>Jeudi 20 <span class="relpill">Hier</span></b><button class="plus" aria-label="Ajouter">+</button></div>
-      <button class="event cat-kids">
-        <span class="time">jour entier</span><i class="bar"></i>
-        <span><b>Semaine de garde avec les enfants</b><small>Les enfants sont avec toi</small></span><span>›</span>
-      </button>
-    </article>
-
-    <article class="card" data-date="2026-08-22">
-      <div class="cardhead"><b>Samedi 22 <span class="relpill">Hier</span></b><button class="plus" aria-label="Ajouter">+</button></div>
-      <button class="event cat-kids">
-        <span class="time">jour entier</span><i class="bar"></i>
-        <span><b>Semaine de garde avec les enfants</b><small>Les enfants sont avec toi</small></span><span>›</span>
-      </button>
-    </article>
-
-    <article class="card selected" data-date="2026-08-23">
-      <div class="cardhead"><b>Dimanche 23 <span class="relpill">Aujourd’hui</span></b><button class="plus" aria-label="Ajouter">+</button></div>
-      <button class="event cat-kids">
-        <span class="time">jour entier</span><i class="bar"></i>
-        <span><b>Semaine de garde avec les enfants</b><small>Les enfants sont avec toi</small></span><span>›</span>
-      </button>
-    </article>
-  </div>
-</div>
 </section>
 
-<section id="lists" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Mes listes ♡</h2><div class="sub">Ajoute une tâche en quelques secondes.</div></div><button class="back" data-nav="week">‹</button></div>
+<section id="lists" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Mes listes ♡</h2><div class="sub">Ajoute une tâche en quelques secondes. Une fois cochée, elle apparaît le jour où tu l’as réalisée.</div></div><button class="back" data-nav="week">‹</button></div>
 
 <div class="listbar">
 <input id="search" class="search" placeholder="Rechercher une tâche…">
@@ -257,8 +213,54 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
 <div class="todohead"><h3 id="listTitle">Toutes mes tâches</h3><span id="taskCount"></span></div>
 <div class="todo" id="todo"></div></section>
 
-<section id="month" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Mon mois ♡</h2><div class="sub">Planning coloré · tous tes rendez-vous au même endroit.</div></div><button class="back" data-nav="week">‹</button></div>
-<div class="hero"><div class="weekhead"><div class="weektitle" id="monthTitle"></div><div class="monthtools"><button id="prevMonth">‹</button><button class="todaybtn" id="todayMonth">Aujourd’hui</button><button id="nextMonth">›</button></div></div><div class="monthgrid" id="monthGrid"></div><div class="monthlegend"><span>● Travail</span><span>● Enfants</span><span>● Perso</span><span>● Vincent</span><span>● Santé</span><span>● Loisirs/Voyage</span></div></div></section>
+<section id="month" class="page">
+<div class="overlaytop">
+  <div>
+    <div class="kicker">Bloom Week</div>
+    <h2>Mon mois ♡</h2>
+    <div class="sub">Vue aérée & colorée · les événements importants en un coup d’œil.</div>
+  </div>
+  <button class="back" data-nav="week">‹</button>
+</div>
+
+<div class="hero monthhero">
+  <div class="weekhead">
+    <div>
+      <div class="weektitle" id="monthTitle"></div>
+      <div class="monthhint">★ Une étoile cochée dans la semaine = événement mis en avant ici.</div>
+    </div>
+    <div class="monthtools">
+      <button id="prevMonth" aria-label="Mois précédent">‹</button>
+      <button class="todaybtn" id="todayMonth">Aujourd’hui</button>
+      <button id="nextMonth" aria-label="Mois suivant">›</button>
+    </div>
+  </div>
+
+  <div class="monthviewbar">
+    <button class="monthfilter active" id="starredOnlyBtn">★ Étoilés</button>
+    <button class="monthfilter" id="showAllMonthBtn">Tous</button>
+    <button class="monthpalettebtn" id="toggleMonthPalette">🎨 Couleurs</button>
+  </div>
+
+  <div class="monthpalette" id="monthPalette">
+    <div class="palettehead"><b>Mes couleurs</b><span>Personnalise les catégories du mois.</span></div>
+    <div class="palettegrid">
+      <label><span>Travail</span><input type="color" data-month-color="work"></label>
+      <label><span>Enfants</span><input type="color" data-month-color="kids"></label>
+      <label><span>Santé</span><input type="color" data-month-color="health"></label>
+      <label><span>Personnel</span><input type="color" data-month-color="personal"></label>
+      <label><span>Vincent / Pompiers</span><input type="color" data-month-color="vincent"></label>
+      <label><span>Loisirs / Sorties</span><input type="color" data-month-color="leisure"></label>
+      <label><span>Voyage</span><input type="color" data-month-color="travel"></label>
+      <label><span>Fin de poste</span><input type="color" data-month-color="shiftend"></label>
+    </div>
+    <button class="btn" id="resetMonthColors">Réinitialiser les couleurs</button>
+  </div>
+
+  <div class="monthgrid" id="monthGrid"></div>
+  <div class="monthlegend" id="monthLegend"></div>
+</div>
+</section>
 
 <section id="settings" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Réglages ♡</h2></div><button class="back" data-nav="week">‹</button></div><div class="vacbox"><div class="field"><label>Prénom</label><input value="Francheska"></div><div class="field"><label>Notes</label><textarea></textarea></div><button class="btn primary" id="settingsSave">Enregistrer</button></div>
 <div class="notifbox">
@@ -472,12 +474,17 @@ function categoryLabel(c){return({work:'Travail',kids:'Enfants / Famille',person
 function reminderLabel(v){var n=Number(v);if(v==='')return'';if(n===0)return"à l’heure";if(n<60)return n+' min avant';if(n===60)return'1 h avant';if(n===120)return'2 h avant';if(n===1440)return'la veille';return n+' min avant'}
 
 var EVENT_DONE;try{EVENT_DONE=JSON.parse(localStorage.getItem('bloom_event_done_v1')||'{}')}catch(e){EVENT_DONE={}}
+var MONTH_STARRED;try{MONTH_STARRED=JSON.parse(localStorage.getItem('bloom_month_starred_v1')||'{}')}catch(e){MONTH_STARRED={}}
+function saveMonthStarred(){try{localStorage.setItem('bloom_month_starred_v1',JSON.stringify(MONTH_STARRED))}catch(e){}}
+function monthStarKey(ev){return ev.id+'|'+ev.date+'|'+(ev.time||'all')}
+
 function saveEventDone(){try{localStorage.setItem('bloom_event_done_v1',JSON.stringify(EVENT_DONE))}catch(e){}}
 function eventDoneKey(ev){return ev.id+'|'+ev.date+'|'+(ev.time||'all')}
 
 function eventButton(ev){
-  var wrap=document.createElement('div'),key=eventDoneKey(ev);
+  var wrap=document.createElement('div'),key=eventDoneKey(ev),starKey=monthStarKey(ev);
   wrap.className='eventrow'+(EVENT_DONE[key]?' done':'');
+
   var ck=document.createElement('input');
   ck.type='checkbox';ck.className='eventcheck';ck.checked=!!EVENT_DONE[key];
   ck.setAttribute('aria-label','Marquer l’événement comme réalisé');
@@ -487,6 +494,21 @@ function eventButton(ev){
     saveEventDone();
     wrap.classList.toggle('done',this.checked);
   };
+
+  var star=document.createElement('button');
+  star.type='button';
+  star.className='monthstar'+(MONTH_STARRED[starKey]?' active':'');
+  star.textContent='★';
+  star.setAttribute('aria-label','Afficher ou masquer cet événement dans le planning mensuel');
+  star.onclick=function(e){
+    e.stopPropagation();
+    MONTH_STARRED[starKey]=!MONTH_STARRED[starKey];
+    if(!MONTH_STARRED[starKey])delete MONTH_STARRED[starKey];
+    saveMonthStarred();
+    star.classList.toggle('active',!!MONTH_STARRED[starKey]);
+    if(document.getElementById('month').classList.contains('active'))renderMonth();
+  };
+
   var b=document.createElement('button');
   b.className='event cat-'+(ev.cat||'personal');
   var sub=[];
@@ -495,11 +517,118 @@ function eventButton(ev){
   if(ev.reminder!==undefined&&ev.reminder!=='')sub.push('Rappel '+reminderLabel(ev.reminder));
   b.innerHTML='<span class="time">'+esc(ev.time||'jour entier')+'</span><i class="bar"></i><span><b>'+esc(ev.title)+'</b><small>'+esc(sub.join(' · ')||categoryLabel(ev.cat))+'</small></span><span>›</span>';
   b.onclick=function(){openEventModal(parseISO(ev.date),ev)};
-  wrap.appendChild(ck);wrap.appendChild(b);
+
+  wrap.appendChild(ck);wrap.appendChild(star);wrap.appendChild(b);
   return wrap
 }
-function renderWeek(){var end=addDays(currentWeek,6);document.getElementById('weekTitle').textContent=currentWeek.getDate()+' — '+end.getDate()+' '+new Intl.DateTimeFormat('fr-FR',{month:'long'}).format(end);document.getElementById('weekSubtitle').textContent=weekTypeLabel(currentWeek);var days=document.getElementById('weekDays');days.innerHTML='';for(var i=0;i<7;i++){var d=addDays(currentWeek,i),b=document.createElement('button'),r=relation(d);b.className='day'+(sameDate(d,selectedDate)?' active':'');b.dataset.date=iso(d);b.innerHTML=shortDate(d).split(' ')[0].toUpperCase()+'<b>'+d.getDate()+'</b>'+(r?'<span class="rel">'+r+'</span>':'');b.onclick=function(){selectedDate=parseISO(this.dataset.date);renderWeek()};days.appendChild(b)}var focusRel=relation(selectedDate);document.getElementById('focus').textContent=focusRel||cap(new Intl.DateTimeFormat('fr-FR',{weekday:'long'}).format(selectedDate));document.getElementById('focusDate').textContent=longDate(selectedDate);var board=document.getElementById('board');board.innerHTML='';var order=[selectedDate];for(var j=0;j<7;j++){var dd=addDays(currentWeek,j);if(!sameDate(dd,selectedDate))order.push(dd)}order.forEach(function(d){var card=document.createElement('article');card.className='card'+(sameDate(d,selectedDate)?' selected':'');var rel=relation(d),evs=eventsForDate(iso(d));card.innerHTML='<div class="cardhead"><b>'+cap(new Intl.DateTimeFormat('fr-FR',{weekday:'long'}).format(d))+' '+d.getDate()+(rel?' <span class="relpill">'+rel+'</span>':'')+'</b><button class="plus">+</button></div>';card.querySelector('.plus').onclick=function(e){e.stopPropagation();openEventModal(d)};if(!evs.length){var empty=document.createElement('div');empty.className='emptyday';empty.textContent='Aucun événement';card.appendChild(empty)}evs.forEach(function(ev){card.appendChild(eventButton(ev))});board.appendChild(card)})}
-function renderMonth(){document.getElementById('monthTitle').textContent=monthLabel(currentMonth);var g=document.getElementById('monthGrid');g.innerHTML='';['L','M','M','J','V','S','D'].forEach(function(x){var h=document.createElement('div');h.className='monthdow';h.textContent=x;g.appendChild(h)});var first=mondayOf(currentMonth);for(var i=0;i<42;i++){var d=addDays(first,i),cell=document.createElement('div');cell.className='monthcell'+(d.getMonth()!==currentMonth.getMonth()?' other':'')+(sameDate(d,new Date())?' today':'');cell.innerHTML='<div class="monthnum">'+d.getDate()+'</div>';eventsForDate(iso(d)).slice(0,4).forEach(function(ev){var c=document.createElement('button');c.className='mchip '+(ev.cat||'personal');c.textContent=(ev.time?ev.time+' ':'')+ev.title;c.onclick=function(){selectedDate=d;currentWeek=mondayOf(d);show('week');renderWeek()};cell.appendChild(c)});g.appendChild(cell)}}
+function renderWeek(){var end=addDays(currentWeek,6);document.getElementById('weekTitle').textContent=currentWeek.getDate()+' — '+end.getDate()+' '+new Intl.DateTimeFormat('fr-FR',{month:'long'}).format(end);document.getElementById('weekSubtitle').textContent=weekTypeLabel(currentWeek);var days=document.getElementById('weekDays');days.innerHTML='';for(var i=0;i<7;i++){var d=addDays(currentWeek,i),b=document.createElement('button'),r=relation(d);b.className='day'+(sameDate(d,selectedDate)?' active':'');b.dataset.date=iso(d);b.innerHTML=shortDate(d).split(' ')[0].toUpperCase()+'<b>'+d.getDate()+'</b>'+(r?'<span class="rel">'+r+'</span>':'');b.onclick=function(){selectedDate=parseISO(this.dataset.date);renderWeek()};days.appendChild(b)}var focusRel=relation(selectedDate);document.getElementById('focus').textContent=focusRel||cap(new Intl.DateTimeFormat('fr-FR',{weekday:'long'}).format(selectedDate));document.getElementById('focusDate').textContent=longDate(selectedDate);var board=document.getElementById('board');board.innerHTML='';var order=[selectedDate];for(var j=0;j<7;j++){var dd=addDays(currentWeek,j);if(!sameDate(dd,selectedDate))order.push(dd)}order.forEach(function(d){var card=document.createElement('article');card.className='card'+(sameDate(d,selectedDate)?' selected':'');var rel=relation(d),evs=eventsForDate(iso(d));card.innerHTML='<div class="cardhead"><b>'+cap(new Intl.DateTimeFormat('fr-FR',{weekday:'long'}).format(d))+' '+d.getDate()+(rel?' <span class="relpill">'+rel+'</span>':'')+'</b><button class="plus">+</button></div>';card.querySelector('.plus').onclick=function(e){e.stopPropagation();openEventModal(d)};if(!evs.length){var empty=document.createElement('div');empty.className='emptyday';empty.textContent='Aucun événement';card.appendChild(empty)}evs.forEach(function(ev){card.appendChild(eventButton(ev))});appendCompletedTasks(card,iso(d));board.appendChild(card)})}
+var DEFAULT_MONTH_COLORS={
+  work:'#5b8def',kids:'#ff9d3d',health:'#63bd74',personal:'#f36f9a',
+  vincent:'#ef6a6a',leisure:'#9a78d2',travel:'#54beb6',shiftend:'#8fa2b7'
+};
+var MONTH_COLORS;try{MONTH_COLORS=Object.assign({},DEFAULT_MONTH_COLORS,JSON.parse(localStorage.getItem('bloom_month_colors_v1')||'{}'))}catch(e){MONTH_COLORS=Object.assign({},DEFAULT_MONTH_COLORS)}
+var MONTH_STARRED_ONLY;try{MONTH_STARRED_ONLY=localStorage.getItem('bloom_month_starred_only_v1')!=='false'}catch(e){MONTH_STARRED_ONLY=true}
+
+function saveMonthColors(){try{localStorage.setItem('bloom_month_colors_v1',JSON.stringify(MONTH_COLORS))}catch(e){}}
+function saveMonthMode(){try{localStorage.setItem('bloom_month_starred_only_v1',String(MONTH_STARRED_ONLY))}catch(e){}}
+function hexToRgba(hex,a){
+  var h=String(hex||'#bb7b81').replace('#','');
+  if(h.length===3)h=h.split('').map(function(x){return x+x}).join('');
+  var n=parseInt(h,16);
+  if(isNaN(n))return'rgba(187,123,129,'+a+')';
+  return'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
+}
+function monthVisibleEvents(dateString){
+  var evs=eventsForDate(dateString);
+  if(MONTH_STARRED_ONLY)evs=evs.filter(function(ev){return !!MONTH_STARRED[monthStarKey(ev)]});
+  return evs;
+}
+function renderMonthLegend(){
+  var labels={work:'Travail',kids:'Enfants',health:'Santé',personal:'Personnel',vincent:'Vincent / Pompiers',leisure:'Loisirs',travel:'Voyage',shiftend:'Fin de poste'};
+  var box=document.getElementById('monthLegend');box.innerHTML='';
+  Object.keys(labels).forEach(function(k){
+    var s=document.createElement('span');
+    s.innerHTML='<i style="background:'+esc(MONTH_COLORS[k])+'"></i>'+labels[k];
+    box.appendChild(s);
+  });
+}
+function refreshMonthColorInputs(){
+  document.querySelectorAll('[data-month-color]').forEach(function(inp){
+    var k=inp.getAttribute('data-month-color');
+    inp.value=MONTH_COLORS[k]||DEFAULT_MONTH_COLORS[k];
+  });
+}
+function syncMonthModeButtons(){
+  document.getElementById('starredOnlyBtn').classList.toggle('active',MONTH_STARRED_ONLY);
+  document.getElementById('showAllMonthBtn').classList.toggle('active',!MONTH_STARRED_ONLY);
+}
+function renderMonth(){
+  document.getElementById('monthTitle').textContent=monthLabel(currentMonth);
+  syncMonthModeButtons();refreshMonthColorInputs();renderMonthLegend();
+
+  var g=document.getElementById('monthGrid');g.innerHTML='';
+  ['LUN','MAR','MER','JEU','VEN','SAM','DIM'].forEach(function(x){
+    var h=document.createElement('div');h.className='monthdow';h.textContent=x;g.appendChild(h)
+  });
+
+  var first=mondayOf(currentMonth),visibleCount=0;
+  for(var i=0;i<42;i++){
+    (function(){
+      var d=addDays(first,i),dateString=iso(d),cell=document.createElement('div');
+      cell.className='monthcell'+(d.getMonth()!==currentMonth.getMonth()?' other':'')+(sameDate(d,new Date())?' today':'');
+      cell.innerHTML='<div class="monthnum">'+d.getDate()+'</div>';
+
+      cell.onclick=function(e){
+        if(e.target===cell||e.target.classList.contains('monthnum')){
+          selectedDate=d;currentWeek=mondayOf(d);show('week');renderWeek();
+        }
+      };
+
+      var evs=monthVisibleEvents(dateString);
+      visibleCount+=evs.length;
+      evs.slice(0,3).forEach(function(ev){
+        var color=MONTH_COLORS[ev.cat]||MONTH_COLORS.personal;
+        var c=document.createElement('button');
+        c.className='mchip';
+        c.style.setProperty('--chip',color);
+        c.style.setProperty('--chipbg',hexToRgba(color,.22));
+        c.innerHTML=(ev.time?'<span class="mtime">'+esc(ev.time)+'</span>':'')+esc(ev.title);
+        c.onclick=function(e){
+          e.stopPropagation();
+          selectedDate=d;currentWeek=mondayOf(d);show('week');renderWeek()
+        };
+        cell.appendChild(c)
+      });
+      if(evs.length>3){
+        var more=document.createElement('div');more.className='monthmore';
+        more.textContent='+'+(evs.length-3)+' autre'+(evs.length-3>1?'s':'');
+        cell.appendChild(more)
+      }
+      g.appendChild(cell);
+    })();
+  }
+
+  if(MONTH_STARRED_ONLY&&visibleCount===0){
+    var msg=document.createElement('div');msg.className='monthempty';
+    msg.textContent='Aucun événement étoilé ce mois-ci. Dans tes fiches semaine, touche ★ à côté des événements que tu veux voir ici.';
+    g.appendChild(msg);
+  }
+}
+
+document.getElementById('starredOnlyBtn').onclick=function(){MONTH_STARRED_ONLY=true;saveMonthMode();renderMonth()};
+document.getElementById('showAllMonthBtn').onclick=function(){MONTH_STARRED_ONLY=false;saveMonthMode();renderMonth()};
+document.getElementById('toggleMonthPalette').onclick=function(){document.getElementById('monthPalette').classList.toggle('show');refreshMonthColorInputs()};
+document.querySelectorAll('[data-month-color]').forEach(function(inp){
+  inp.oninput=function(){
+    MONTH_COLORS[this.getAttribute('data-month-color')]=this.value;
+    saveMonthColors();renderMonth();
+  };
+});
+document.getElementById('resetMonthColors').onclick=function(){
+  MONTH_COLORS=Object.assign({},DEFAULT_MONTH_COLORS);
+  saveMonthColors();renderMonth();
+};
+
 document.getElementById('prevWeek').onclick=function(){currentWeek=addDays(currentWeek,-7);selectedDate=currentWeek;renderWeek()};document.getElementById('nextWeek').onclick=function(){currentWeek=addDays(currentWeek,7);selectedDate=currentWeek;renderWeek()};document.getElementById('todayWeek').onclick=function(){selectedDate=strip(new Date());currentWeek=mondayOf(selectedDate);renderWeek()};document.getElementById('prevMonth').onclick=function(){currentMonth=new Date(currentMonth.getFullYear(),currentMonth.getMonth()-1,1);renderMonth()};document.getElementById('nextMonth').onclick=function(){currentMonth=new Date(currentMonth.getFullYear(),currentMonth.getMonth()+1,1);renderMonth()};document.getElementById('todayMonth').onclick=function(){var n=new Date();currentMonth=new Date(n.getFullYear(),n.getMonth(),1);renderMonth()};
 
 
@@ -537,6 +666,36 @@ function saveTasks(){
   }catch(e){}
 }
 function escTask(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function completedTasksForDate(dateString){
+  return TASKS.filter(function(t){
+    if(!t.done||!t.completedAt)return false;
+    var d=new Date(t.completedAt);
+    return !isNaN(d.getTime())&&iso(d)===dateString;
+  }).sort(function(a,b){return new Date(a.completedAt)-new Date(b.completedAt)});
+}
+function appendCompletedTasks(card,dateString){
+  var tasks=completedTasksForDate(dateString);
+  if(!tasks.length)return;
+  var box=document.createElement('div');
+  box.className='completed-tasks';
+  var title=document.createElement('div');
+  title.className='completed-title';
+  title.textContent='Tâches réalisées';
+  box.appendChild(title);
+  tasks.forEach(function(t){
+    var row=document.createElement('div');
+    row.className='completed-task';
+    var doneDate=new Date(t.completedAt);
+    var time=pad(doneDate.getHours())+':'+pad(doneDate.getMinutes());
+    var folder=folderById(t.folder);
+    row.innerHTML='<span class="completed-check" aria-hidden="true">✓</span>'+
+      '<span class="completed-copy"><b>'+escTask(t.title)+'</b><small>'+escTask(folder?folder.name:'Tâche')+'</small></span>'+
+      '<span class="completed-time">'+time+'</span>';
+    box.appendChild(row);
+  });
+  card.appendChild(box);
+}
+
 function pendingCount(folder){
   return TASKS.filter(function(t){return !t.done&&(folder==='all'||t.folder===folder)}).length
 }
@@ -574,7 +733,7 @@ function renderTasks(){
    shown++;
    var row=document.createElement('div');row.className='task'+(t.done?' done':'');
    row.innerHTML='<input type="checkbox" '+(t.done?'checked':'')+'><div class="taskcopy"><b>'+escTask(t.title)+'</b>'+(t.note?'<small>'+escTask(t.note)+'</small>':'')+'</div><button class="taskdel" aria-label="Supprimer">×</button>';
-   row.querySelector('input').onchange=function(){t.done=this.checked;saveTasks();renderFolders();renderTasks()};
+   row.querySelector('input').onchange=function(){t.done=this.checked;if(t.done){t.completedAt=new Date().toISOString()}else{delete t.completedAt}saveTasks();renderFolders();renderTasks();renderWeek()};
    row.querySelector('.taskdel').onclick=function(){
      if(confirm('Supprimer cette tâche ?')){
        TASKS.splice(index,1);saveTasks();renderFolders();renderTasks()
