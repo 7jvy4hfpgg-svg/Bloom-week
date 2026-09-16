@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#f4ece8"/>
+<title>Bloom Week</title>
+<style>
+:root{
+  --bg:#f6f0ed;
+  --panel:#fffaf7;
+  --ink:#4a3a3f;
+  --muted:#8d7a80;
+  --line:#eadfda;
+  --accent:#9d6877;
+  --accent2:#cdaeb8;
+  --green:#97aa9c;
+  --gold:#c6a66b;
+  --lav:#b8a7c9;
+  --blue:#95a9c3;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+.app{max-width:460px;margin:0 auto;min-height:100vh;background:linear-gradient(180deg,#fbf7f4 0,#f5eeeb 100%);padding:22px 16px 94px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:32px;line-height:1.05;margin:5px 0 4px;font-weight:500}
+.sub{color:var(--muted);font-size:14px}
+.avatar{width:44px;height:44px;border-radius:16px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font-size:22px;box-shadow:0 7px 20px rgba(80,55,64,.08)}
+.hero{margin-top:18px;background:rgba(255,250,247,.82);border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 12px 30px rgba(80,55,64,.07)}
+.weekhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.weektitle{font-family:Georgia,serif;font-size:19px}
+.badge{font-size:12px;background:#efe3e6;color:#805664;padding:7px 10px;border-radius:999px}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.day{padding:9px 2px;border-radius:16px;text-align:center;color:var(--muted);font-size:11px;border:1px solid transparent}
+.day b{display:block;font-size:16px;color:var(--ink);margin-top:3px}
+.day.active{background:#ead8df;border-color:#dec5ce;color:#7e5562}
+.day.active b{color:#6f4553}
+.section{margin-top:20px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:0 2px 10px}
+.section-title h2{font-size:17px;margin:0}
+.section-title span{font-size:12px;color:var(--muted)}
+.timeline{display:grid;gap:9px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:13px 14px;display:grid;grid-template-columns:58px 1fr auto;align-items:center;gap:10px}
+.time{font-size:12px;color:var(--muted)}
+.event b{display:block;font-size:14px;margin-bottom:2px}
+.event small{color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%}
+.children{background:var(--green)} .work{background:var(--blue)} .bloom{background:var(--accent2)} .admin{background:var(--gold)} .personal{background:var(--lav)}
+.focus{background:linear-gradient(135deg,#9d6877,#7c5260);color:white;border:none;box-shadow:0 12px 24px rgba(126,82,96,.2)}
+.focus .time,.focus small{color:#f2e7ea}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px}
+.stat strong{font-size:23px;font-family:Georgia,serif;font-weight:500}
+.stat span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.progress{height:7px;border-radius:999px;background:#eadfda;overflow:hidden;margin-top:9px}
+.progress i{display:block;width:58%;height:100%;background:var(--accent);border-radius:inherit}
+.lists{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.list{border-radius:18px;padding:14px;background:var(--panel);border:1px solid var(--line);min-height:92px}
+.list .emoji{font-size:20px}
+.list b{display:block;margin:8px 0 3px;font-size:13px}
+.list small{color:var(--muted)}
+.todo{margin-top:10px;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:8px 14px}
+.todo-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #eee3df;font-size:13px}
+.todo-row:last-child{border-bottom:none}
+.check{width:21px;height:21px;border:1.5px solid #c6aeb5;border-radius:7px;display:grid;place-items:center;color:white;flex:none}
+.done .check{background:var(--accent);border-color:var(--accent)}
+.done .txt{text-decoration:line-through;color:#a38f95}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(460px,100%);height:78px;padding:9px 18px calc(9px + env(safe-area-inset-bottom));background:rgba(255,250,247,.93);backdrop-filter:blur(18px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);z-index:10}
+.nav button{background:none;border:none;color:var(--muted);font-size:10px}
+.nav button span{display:block;font-size:21px;margin-bottom:3px}
+.nav .active{color:var(--accent)}
+.add{width:44px;height:44px;border-radius:16px;background:var(--accent);color:white!important;margin:-5px auto 0;font-size:26px!important;box-shadow:0 8px 18px rgba(126,82,96,.24)}
+.note{font-size:11px;color:var(--muted);text-align:center;margin-top:12px}
+</style>
+
+<style>
+/* Functional additions are hidden until interaction; the original visible interface is unchanged. */
+.day,.list,.check,.section-title span,.avatar{cursor:pointer}
+.overlay-view{
+  position:fixed; inset:0 0 78px 0; z-index:8; display:none; overflow:auto;
+  background:linear-gradient(180deg,#fbf7f4 0,#f5eeeb 100%);
+}
+.overlay-view.show{display:block}
+.overlay-inner{max-width:460px;margin:0 auto;min-height:100%;padding:22px 16px 28px}
+.overlay-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.overlay-top h2{font-family:Georgia,"Times New Roman",serif;font-size:30px;line-height:1.05;margin:5px 0 4px;font-weight:500}
+.backbtn{width:44px;height:44px;border-radius:16px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font-size:22px;box-shadow:0 7px 20px rgba(80,55,64,.08);color:var(--ink)}
+.search{width:100%;margin-top:18px;border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:12px 14px;outline:none;color:var(--ink)}
+.pills{display:flex;gap:7px;overflow:auto;padding:10px 0 5px;scrollbar-width:none}
+.pill{white-space:nowrap;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 11px;font-size:11px;color:var(--ink)}
+.pill.active{background:#ead8df;border-color:#dec5ce;color:#6f4553}
+.month-head{display:flex;justify-content:space-between;align-items:center;margin:18px 0 12px}
+.month-head button{width:38px;height:38px;border-radius:13px;border:1px solid var(--line);background:var(--panel);font-size:20px;color:var(--ink)}
+.month-title{font-family:Georgia,serif;font-size:21px}
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.mh{text-align:center;font-size:10px;color:var(--muted);padding:6px 0}
+.mcell{min-height:58px;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:6px;font-size:11px;position:relative;text-align:left;color:var(--ink)}
+.mcell.muted{opacity:.35}.mcell.today{border-color:var(--gold)}
+.mdots{position:absolute;left:6px;right:6px;bottom:6px;display:flex;gap:3px;flex-wrap:wrap}.mdot{width:5px;height:5px;border-radius:50%}
+.setting{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:10px}
+.setting label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+.setting input,.setting select{width:100%;border:1px solid var(--line);background:white;border-radius:12px;padding:10px;color:var(--ink)}
+.smallnote{font-size:11px;color:var(--muted);line-height:1.45}
+.modal{position:fixed;inset:0;background:rgba(60,43,49,.28);display:none;align-items:flex-end;justify-content:center;z-index:50}
+.modal.show{display:flex}
+.sheet{width:min(460px,100%);max-height:88vh;overflow:auto;background:#fffaf7;border-radius:26px 26px 0 0;padding:18px 16px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -15px 40px rgba(60,43,49,.18)}
+.handle{width:44px;height:4px;border-radius:999px;background:#d8cac6;margin:0 auto 14px}
+.sheet h3{font-family:Georgia,serif;font-size:22px;font-weight:500;margin:0 0 13px}
+.segment{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}
+.segment button{border:1px solid var(--line);background:white;border-radius:12px;padding:10px;color:var(--ink)}
+.segment button.active{background:#ead8df;border-color:#dec5ce}
+.field{margin-bottom:11px}.field label{display:block;font-size:11px;color:var(--muted);margin:0 0 5px 2px}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:white;border-radius:13px;padding:11px;outline:none;color:var(--ink)}
+.field textarea{min-height:72px;resize:vertical}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.btn{border:1px solid var(--line);background:white;border-radius:13px;padding:11px;color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:white}
+.empty{background:var(--panel);border:1px dashed #d9cbc6;border-radius:18px;padding:18px;text-align:center;color:var(--muted);font-size:13px}
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-15px);opacity:0;background:#4a3a3f;color:#fff;border-radius:999px;padding:9px 13px;font-size:12px;z-index:80;transition:.2s}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div>
+      <div class="kicker">Bloom Week</div>
+      <h1>Bonjour Francheska ♡</h1>
+      <div class="sub">Ton semainier, pensé autour de ta vraie vie.</div>
+    </div>
+    <div class="avatar">✦</div>
+  </div>
+
+  <div class="hero">
+    <div class="weekhead">
+      <div class="weektitle">17 — 23 août</div>
+      <div class="badge">Petite semaine · 20 h</div>
+    </div>
+    <div class="days">
+      <div class="day active">LUN<b>17</b></div>
+      <div class="day">MAR<b>18</b></div>
+      <div class="day">MER<b>19</b></div>
+      <div class="day">JEU<b>20</b></div>
+      <div class="day">VEN<b>21</b></div>
+      <div class="day">SAM<b>22</b></div>
+      <div class="day">DIM<b>23</b></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h2>Aujourd’hui</h2><span>Lundi 17 août</span></div>
+    <div class="timeline">
+      <div class="card">
+        <div class="time">06:30</div><div class="event"><b>Fin de nuit</b><small>Père Favron</small></div><div class="dot work"></div>
+      </div>
+      <div class="card">
+        <div class="time">07:30</div><div class="event"><b>Sommeil</b><small>Récupération</small></div><div class="dot personal"></div>
+      </div>
+      <div class="card focus">
+        <div class="time">10:00</div><div class="event"><b>Enfants avec moi</b><small>Début de ta semaine de garde</small></div><div class="dot children"></div>
+      </div>
+      <div class="card">
+        <div class="time">14:00</div><div class="event"><b>Temps calme</b><small>Repos + enfants</small></div><div class="dot personal"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h2>Cette semaine</h2><span>progression</span></div>
+    <div class="stats">
+      <div class="stat"><strong>12</strong><span>tâches prévues</span><div class="progress"><i></i></div></div>
+      <div class="stat"><strong>7</strong><span>déjà terminées ✓</span><div class="progress"><i style="width:72%"></i></div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h2>Mes listes</h2><span>voir tout</span></div>
+    <div class="lists">
+      <div class="list"><div class="emoji">👗</div><b>Cosmic Bloom</b><small>5 tâches · 2 terminées</small></div>
+      <div class="list"><div class="emoji">🏥</div><b>Père Favron</b><small>3 tâches · 1 urgente</small></div>
+      <div class="list"><div class="emoji">⚖️</div><b>Divorce</b><small>4 tâches · 2 terminées</small></div>
+      <div class="list"><div class="emoji">✨</div><b>Vie perso</b><small>6 tâches · 3 terminées</small></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><h2>À faire bientôt</h2><span>les tâches cochées restent visibles</span></div>
+    <div class="todo">
+      <div class="todo-row done"><div class="check">✓</div><div class="txt">Demander l’attestation à l’avocat</div></div>
+      <div class="todo-row"><div class="check"></div><div class="txt">Relancer Action Logement</div></div>
+      <div class="todo-row"><div class="check"></div><div class="txt">Faire le point Cosmic Bloom</div></div>
+    </div>
+  </div>
+  <div class="note">Prototype visuel · aucune publicité · interface pensée pour iPhone</div>
+</div>
+
+<div class="nav">
+  <button class="active"><span>▦</span>Semaine</button>
+  <button><span>✓</span>Listes</button>
+  <button class="add">+</button>
+  <button><span>▣</span>Mois</button>
+  <button><span>⚙︎</span>Réglages</button>
+</div>
+
+<div id="listsOverlay" class="overlay-view">
+  <div class="overlay-inner">
+    <div class="overlay-top"><div><div class="kicker">Bloom Week</div><h2>Mes listes ♡</h2><div class="sub">Tout ce que tu veux garder en tête.</div></div><button class="backbtn" onclick="closeOverlay()">✦</button></div>
+    <input id="taskSearch" class="search" placeholder="Rechercher une tâche…" oninput="renderListsOverlay()"/>
+    <div id="listPills" class="pills"></div>
+    <div class="section"><div class="lists" id="allListCards"></div></div>
+    <div class="section"><div class="section-title"><h2 id="selectedListTitle">Toutes les tâches</h2><span id="selectedListCount"></span></div><div class="todo" id="allTasks"></div></div>
+  </div>
+</div>
+
+<div id="monthOverlay" class="overlay-view">
+  <div class="overlay-inner">
+    <div class="overlay-top"><div><div class="kicker">Bloom Week</div><h2>Mon mois ♡</h2><div class="sub">Une vue d’ensemble de tes gardes, nuits et rendez-vous.</div></div><button class="backbtn" onclick="closeOverlay()">✦</button></div>
+    <div class="month-head"><button onclick="moveMonth(-1)">‹</button><div id="monthTitle" class="month-title"></div><button onclick="moveMonth(1)">›</button></div>
+    <div id="monthGrid" class="month-grid"></div>
+  </div>
+</div>
+
+<div id="settingsOverlay" class="overlay-view">
+  <div class="overlay-inner">
+    <div class="overlay-top"><div><div class="kicker">Bloom Week</div><h2>Réglages ♡</h2><div class="sub">Ton roulement reste automatique, mais tu gardes la main.</div></div><button class="backbtn" onclick="closeOverlay()">✦</button></div>
+    <div class="setting"><label>Prénom</label><input id="nameInput" onchange="saveSettings()"/></div>
+    <div class="setting"><label>Prise de poste habituelle</label><input id="workStartInput" type="time" onchange="saveSettings()"/></div>
+    <div class="setting"><label>Fin de poste habituelle</label><input id="workEndInput" type="time" onchange="saveSettings()"/></div>
+    <div class="setting"><label>Début de garde — vacances scolaires</label><input id="holidayPickupInput" type="time" onchange="saveSettings()"/></div>
+    <div class="setting"><label>Début de garde — période scolaire</label><input id="schoolPickupInput" type="time" onchange="saveSettings()"/></div>
+    <div class="setting"><label>Fin de garde le dimanche</label><input id="custodyEndInput" type="time" onchange="saveSettings()"/></div>
+    <div class="setting"><label>Mode actuel</label><select id="holidayModeInput" onchange="saveSettings()"><option value="holiday">Vacances scolaires</option><option value="school">Période scolaire</option></select></div>
+    <div class="setting"><div class="smallnote"><b>Roulement intégré :</b> petite semaine = enfants + travail mercredi/jeudi. Grande semaine = travail lundi/mardi/vendredi/samedi/dimanche. La semaine du 17 août 2026 sert d’ancrage.</div></div>
+  </div>
+</div>
+
+<div id="addModal" class="modal" onclick="if(event.target===this)closeAdd()">
+  <div class="sheet"><div class="handle"></div><h3>Ajouter</h3>
+    <div class="segment"><button id="segTask" class="active" onclick="setAddType('task')">☑ Tâche</button><button id="segEvent" onclick="setAddType('event')">◷ Événement</button></div>
+    <div class="field"><label>Titre</label><input id="newTitle" placeholder="Ex. Relancer Action Logement"/></div>
+    <div class="field"><label>Catégorie</label><select id="newCategory"></select></div>
+    <div id="taskFields"><div class="row"><div class="field"><label>Échéance</label><input id="newDue" type="date"/></div><div class="field"><label>Priorité</label><select id="newPriority"><option value="0">Normale</option><option value="1">⭐ Importante</option></select></div></div></div>
+    <div id="eventFields" style="display:none"><div class="row"><div class="field"><label>Date</label><input id="newDate" type="date"/></div><div class="field"><label>Heure</label><input id="newTime" type="time" value="10:00"/></div></div><div class="row"><div class="field"><label>Fin</label><input id="newEndDate" type="date"/></div><div class="field"><label>Heure fin</label><input id="newEndTime" type="time" value="11:00"/></div></div></div>
+    <div class="field"><label>Note</label><textarea id="newNote"></textarea></div>
+    <div class="row"><button class="btn" onclick="closeAdd()">Annuler</button><button class="btn primary" onclick="saveNew()">Ajouter</button></div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+
+
+<script>
+const BW_CATS=[
+ {id:'bloom',name:'Cosmic Bloom',emoji:'👗',color:'#cdaeb8'},
+ {id:'work',name:'Père Favron',emoji:'🏥',color:'#95a9c3'},
+ {id:'divorce',name:'Divorce',emoji:'⚖️',color:'#c6a66b'},
+ {id:'home',name:'Logement',emoji:'🏠',color:'#d7b09d'},
+ {id:'finance',name:'Finances',emoji:'💳',color:'#9baa9c'},
+ {id:'kids',name:'Enfants / Famille',emoji:'👨‍👩‍👧',color:'#97aa9c'},
+ {id:'couple',name:'Couple / Sorties',emoji:'❤️',color:'#bb7b81'},
+ {id:'personal',name:'Vie perso',emoji:'✨',color:'#b8a7c9'},
+ {id:'shopping',name:'Courses / Achats',emoji:'🛒',color:'#c2a386'},
+ {id:'car',name:'Voiture',emoji:'🚗',color:'#9ca9ae'}
+];
+const BW_DEFAULT={
+ settings:{name:'Francheska',workStart:'20:30',workEnd:'06:30',holidayPickup:'10:00',schoolPickup:'07:00',custodyEnd:'20:00',holidayMode:'holiday'},
+ tasks:[
+  {id:1,title:"Demander l’attestation à l’avocat",cat:'divorce',due:'2026-08-17',done:true,priority:0},
+  {id:2,title:"Relancer Action Logement",cat:'home',due:'2026-08-18',done:false,priority:1},
+  {id:3,title:"Faire le point Cosmic Bloom",cat:'bloom',due:'2026-08-18',done:false,priority:0},
+  {id:4,title:"Vérifier les dossiers techniques",cat:'bloom',due:'2026-08-19',done:false,priority:0},
+  {id:5,title:"Contacter la couturière",cat:'bloom',due:'2026-08-20',done:true,priority:0},
+  {id:6,title:"Mettre à jour le budget prototypes",cat:'bloom',due:'2026-08-21',done:false,priority:0},
+  {id:7,title:"Classer les références tissu",cat:'bloom',due:'2026-08-30',done:true,priority:0},
+  {id:8,title:"Vérifier le planning de septembre",cat:'work',due:'2026-08-19',done:true,priority:0},
+  {id:9,title:"Relancer pour l’accès NT94",cat:'work',due:'2026-08-21',done:false,priority:1},
+  {id:10,title:"Préparer le rendez-vous médecine du travail",cat:'work',due:'2026-08-30',done:false,priority:0},
+  {id:11,title:"Classer les justificatifs du divorce",cat:'divorce',due:'2026-08-20',done:true,priority:0},
+  {id:12,title:"Relancer l’avocat",cat:'divorce',due:'2026-08-22',done:false,priority:0},
+  {id:13,title:"Vérifier les pièces manquantes",cat:'divorce',due:'2026-08-29',done:true,priority:0},
+  {id:14,title:"Planifier une séance de sport",cat:'personal',due:'2026-08-22',done:true,priority:0},
+  {id:15,title:"Prendre rendez-vous coiffure",cat:'personal',due:'2026-08-25',done:false,priority:0},
+  {id:16,title:"Prévoir un moment détente",cat:'personal',due:'2026-08-28',done:true,priority:0},
+  {id:17,title:"Faire le tri dressing",cat:'personal',due:'2026-08-31',done:true,priority:0},
+  {id:18,title:"Acheter les produits cheveux",cat:'personal',due:'2026-09-02',done:false,priority:0},
+  {id:19,title:"Préparer les affaires des enfants",cat:'kids',due:'2026-08-23',done:true,priority:0},
+  {id:20,title:"Faire le point finances",cat:'finance',due:'2026-08-23',done:false,priority:0},
+  {id:21,title:"Vérifier dossier logement",cat:'home',due:'2026-08-23',done:true,priority:0}
+ ],
+ events:[
+  {id:100,title:'Fin de nuit',cat:'work',date:'2026-08-17',time:'06:30',endDate:'2026-08-17',endTime:'06:30',note:'Père Favron'},
+  {id:101,title:'Sommeil',cat:'personal',date:'2026-08-17',time:'07:30',endDate:'2026-08-17',endTime:'09:30',note:'Récupération'},
+  {id:102,title:'Temps calme',cat:'personal',date:'2026-08-17',time:'14:00',endDate:'2026-08-17',endTime:'16:00',note:'Repos + enfants'}
+ ]
+};
+let BW=JSON.parse(localStorage.getItem('bloom_exact_prototype')||'null')||JSON.parse(JSON.stringify(BW_DEFAULT));
+const BW_ANCHOR=new Date('2026-08-17T00:00:00');
+let bwWeekStart=new Date('2026-08-17T00:00:00');
+let bwSelected=new Date('2026-08-17T00:00:00');
+let bwMonth=new Date('2026-08-01T00:00:00');
+let bwSelectedList='all', bwAddType='task';
+const BW_MONTH=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const BW_DAY=['LUN','MAR','MER','JEU','VEN','SAM','DIM'];
+function bwSave(){localStorage.setItem('bloom_exact_prototype',JSON.stringify(BW))}
+function bwIso(d){let y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),da=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${da}`}
+function bwMonday(d){let x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
+function bwCat(id){return BW_CATS.find(c=>c.id===id)||BW_CATS[0]}
+function bwSmall(w){let n=Math.round((bwMonday(w)-BW_ANCHOR)/604800000);return ((n%2)+2)%2===0}
+function bwGenerated(w){
+ let a=[],s=BW.settings,sm=bwSmall(w);
+ if(sm){let sun=new Date(w);sun.setDate(sun.getDate()+6);a.push({title:'Enfants avec moi',cat:'kids',date:bwIso(w),time:s.holidayMode==='holiday'?s.holidayPickup:s.schoolPickup,endDate:bwIso(sun),endTime:s.custodyEnd,note:'Début de ta semaine de garde',generated:true,focus:true})}
+ (sm?[2,3]:[0,1,4,5,6]).forEach(i=>{let d=new Date(w),e;d.setDate(d.getDate()+i);e=new Date(d);e.setDate(e.getDate()+1);a.push({title:'Travail',cat:'work',date:bwIso(d),time:s.workStart,endDate:bwIso(e),endTime:s.workEnd,note:sm?'Petite semaine · 20 h':'Grande semaine · 50 h',generated:true})});
+ return a;
+}
+function bwAllEvents(from,to){let a=[...BW.events],w=bwMonday(from);while(w<=to){a=a.concat(bwGenerated(w));let n=new Date(w);n.setDate(n.getDate()+7);w=n}return a}
+function bwTouches(e,d){return e.date<=d&&(e.endDate||e.date)>=d}
+function bwTime(e,d){if(e.date===d)return e.time||'Toute la journée';if((e.endDate||e.date)===d)return 'jusqu’à '+(e.endTime||'');return 'Toute la journée'}
+function bwTaskRow(t){
+ let c=bwCat(t.cat);
+ return `<div class="todo-row ${t.done?'done':''}"><div class="check" data-task="${t.id}">${t.done?'✓':''}</div><div class="txt">${t.title}</div>${t.priority?'<div style="margin-left:auto;color:var(--gold)">★</div>':''}</div>`;
+}
+function bwRenderMain(){
+ document.querySelector('h1').textContent=`Bonjour ${BW.settings.name} ♡`;
+ let end=new Date(bwWeekStart);end.setDate(end.getDate()+6);
+ document.querySelector('.weektitle').textContent=`${bwWeekStart.getDate()} — ${end.getDate()} ${BW_MONTH[end.getMonth()]}`;
+ document.querySelector('.badge').textContent=bwSmall(bwWeekStart)?'Petite semaine · 20 h':'Grande semaine · 50 h';
+ const days=document.querySelector('.days'); days.innerHTML='';
+ for(let i=0;i<7;i++){let d=new Date(bwWeekStart);d.setDate(d.getDate()+i);let div=document.createElement('div');div.className='day'+(bwIso(d)===bwIso(bwSelected)?' active':'');div.innerHTML=`${BW_DAY[i]}<b>${d.getDate()}</b>`;div.onclick=()=>{bwSelected=d;bwRenderMain()};days.appendChild(div)}
+ let idx=(bwSelected.getDay()+6)%7, title=document.querySelector('.section .section-title');
+ title.querySelector('h2').textContent=bwIso(bwSelected)===bwIso(new Date())?'Aujourd’hui':['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'][idx];
+ title.querySelector('span').textContent=`${['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'][idx]} ${bwSelected.getDate()} ${BW_MONTH[bwSelected.getMonth()]}`;
+ let timeline=document.querySelector('.timeline'), ev=bwAllEvents(bwWeekStart,end).filter(x=>bwTouches(x,bwIso(bwSelected))).sort((a,b)=>bwTime(a,bwIso(bwSelected)).localeCompare(bwTime(b,bwIso(bwSelected))));
+ timeline.innerHTML=ev.length?'':'<div class="empty">Rien de prévu. Une vraie plage libre ♡</div>';
+ ev.forEach(x=>{let c=bwCat(x.cat),card=document.createElement('div');card.className='card'+(x.focus?' focus':'');card.innerHTML=`<div class="time">${bwTime(x,bwIso(bwSelected))}</div><div class="event"><b>${x.title}</b><small>${x.note||c.name}</small></div><div class="dot" style="background:${c.color}"></div>`;timeline.appendChild(card)});
+ let wt=BW.tasks.filter(t=>t.due>=bwIso(bwWeekStart)&&t.due<=bwIso(end)), done=wt.filter(t=>t.done).length;
+ let statEls=document.querySelectorAll('.stat');
+ statEls[0].querySelector('strong').textContent=wt.length;
+ statEls[0].querySelector('.progress i').style.width=(wt.length?Math.round(done/wt.length*100):0)+'%';
+ statEls[1].querySelector('strong').textContent=done;
+ statEls[1].querySelector('.progress i').style.width=(wt.length?Math.round(done/wt.length*100):0)+'%';
+ bwRenderHomeLists();
+ let up=[...BW.tasks].sort((a,b)=>(a.done-b.done)||((a.due||'9999').localeCompare(b.due||'9999'))).slice(0,3);
+ document.querySelector('.todo').innerHTML=up.map(bwTaskRow).join('');
+ document.querySelectorAll('[data-task]').forEach(el=>el.onclick=()=>bwToggleTask(+el.dataset.task));
+}
+function bwRenderHomeLists(){
+ let ids=['bloom','work','divorce','personal'], cards=document.querySelectorAll('.list');
+ ids.forEach((id,i)=>{let c=bwCat(id),arr=BW.tasks.filter(t=>t.cat===id),done=arr.filter(t=>t.done).length;
+   cards[i].querySelector('.emoji').textContent=c.emoji;cards[i].querySelector('b').textContent=c.name;
+   cards[i].querySelector('small').textContent=id==='work'?`${arr.length} tâches · ${arr.filter(t=>t.priority&&!t.done).length} urgente`:`${arr.length} tâches · ${done} terminées`;
+   cards[i].onclick=()=>{bwSelectedList=id;openOverlay('lists')};
+ });
+}
+function bwToggleTask(id){let t=BW.tasks.find(x=>x.id===id);if(t){t.done=!t.done;bwSave();bwRenderMain();bwRenderListsOverlay();bwToast(t.done?'Tâche terminée ✓':'Tâche réouverte')}}
+function bwRenderListsOverlay(){
+ let q=(document.getElementById('taskSearch').value||'').toLowerCase();
+ document.getElementById('listPills').innerHTML=`<button class="pill ${bwSelectedList==='all'?'active':''}" onclick="bwSelectedList='all';bwRenderListsOverlay()">Toutes</button>`+BW_CATS.map(c=>`<button class="pill ${bwSelectedList===c.id?'active':''}" onclick="bwSelectedList='${c.id}';bwRenderListsOverlay()">${c.emoji} ${c.name}</button>`).join('');
+ document.getElementById('allListCards').innerHTML=BW_CATS.map(c=>{let a=BW.tasks.filter(t=>t.cat===c.id),d=a.filter(t=>t.done).length;return `<div class="list" onclick="bwSelectedList='${c.id}';bwRenderListsOverlay()"><div class="emoji">${c.emoji}</div><b>${c.name}</b><small>${a.length} tâches · ${d} terminées</small></div>`}).join('');
+ let a=BW.tasks.filter(t=>(bwSelectedList==='all'||t.cat===bwSelectedList)&&t.title.toLowerCase().includes(q));
+ document.getElementById('selectedListTitle').textContent=bwSelectedList==='all'?'Toutes les tâches':bwCat(bwSelectedList).emoji+' '+bwCat(bwSelectedList).name;
+ document.getElementById('selectedListCount').textContent=`${a.filter(t=>!t.done).length} à faire · ${a.filter(t=>t.done).length} terminées`;
+ document.getElementById('allTasks').innerHTML=a.length?a.sort((x,y)=>(x.done-y.done)||((x.due||'9999').localeCompare(y.due||'9999'))).map(t=>{let c=bwCat(t.cat);return `<div class="todo-row ${t.done?'done':''}"><div class="check" onclick="bwToggleTask(${t.id})">${t.done?'✓':''}</div><div class="txt"><b>${t.title}</b><div style="font-size:11px;color:var(--muted)">${c.emoji} ${c.name}${t.due?' · '+t.due.split('-').reverse().join('/') :''}</div></div>${t.priority?'<div style="margin-left:auto;color:var(--gold)">★</div>':''}</div>`}).join(''):'<div class="empty">Aucune tâche dans cette liste.</div>';
+}
+function bwRenderMonth(){
+ let y=bwMonth.getFullYear(),m=bwMonth.getMonth(),first=new Date(y,m,1),start=bwMonday(first),end=new Date(start);end.setDate(end.getDate()+41),ev=bwAllEvents(start,end);
+ document.getElementById('monthTitle').textContent=`${BW_MONTH[m].charAt(0).toUpperCase()+BW_MONTH[m].slice(1)} ${y}`;
+ let grid=document.getElementById('monthGrid');grid.innerHTML=BW_DAY.map(x=>`<div class="mh">${x}</div>`).join('');
+ for(let i=0;i<42;i++){let d=new Date(start);d.setDate(d.getDate()+i);let ds=bwIso(d),b=document.createElement('button');b.className='mcell'+(d.getMonth()!==m?' muted':'')+(ds===bwIso(new Date())?' today':'');let dots=ev.filter(x=>bwTouches(x,ds)).slice(0,5).map(x=>`<i class="mdot" style="background:${bwCat(x.cat).color}"></i>`).join('');b.innerHTML=`<b>${d.getDate()}</b><div class="mdots">${dots}</div>`;b.onclick=()=>{bwSelected=d;bwWeekStart=bwMonday(d);closeOverlay();bwRenderMain()};grid.appendChild(b)}
+}
+function moveMonth(n){bwMonth=new Date(bwMonth.getFullYear(),bwMonth.getMonth()+n,1);bwRenderMonth()}
+function bwLoadSettings(){nameInput.value=BW.settings.name;workStartInput.value=BW.settings.workStart;workEndInput.value=BW.settings.workEnd;holidayPickupInput.value=BW.settings.holidayPickup;schoolPickupInput.value=BW.settings.schoolPickup;custodyEndInput.value=BW.settings.custodyEnd;holidayModeInput.value=BW.settings.holidayMode}
+function saveSettings(){BW.settings={name:nameInput.value||'Francheska',workStart:workStartInput.value,workEnd:workEndInput.value,holidayPickup:holidayPickupInput.value,schoolPickup:schoolPickupInput.value,custodyEnd:custodyEndInput.value,holidayMode:holidayModeInput.value};bwSave();bwRenderMain();bwToast('Réglages enregistrés')}
+function openOverlay(which){
+ document.querySelectorAll('.overlay-view').forEach(x=>x.classList.remove('show'));
+ document.getElementById(which+'Overlay').classList.add('show');
+ const nav=document.querySelectorAll('.nav button');nav.forEach(x=>x.classList.remove('active'));
+ if(which==='lists')nav[1].classList.add('active');if(which==='month')nav[3].classList.add('active');if(which==='settings')nav[4].classList.add('active');
+ if(which==='lists')bwRenderListsOverlay();if(which==='month')bwRenderMonth();if(which==='settings')bwLoadSettings();
+}
+function closeOverlay(){document.querySelectorAll('.overlay-view').forEach(x=>x.classList.remove('show'));let nav=document.querySelectorAll('.nav button');nav.forEach(x=>x.classList.remove('active'));nav[0].classList.add('active')}
+function openAdd(){newCategory.innerHTML=BW_CATS.map(c=>`<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');newDue.value=bwIso(bwSelected);newDate.value=bwIso(bwSelected);newEndDate.value=bwIso(bwSelected);addModal.classList.add('show')}
+function closeAdd(){addModal.classList.remove('show');newTitle.value='';newNote.value=''}
+function setAddType(t){bwAddType=t;segTask.classList.toggle('active',t==='task');segEvent.classList.toggle('active',t==='event');taskFields.style.display=t==='task'?'block':'none';eventFields.style.display=t==='event'?'block':'none'}
+function saveNew(){let title=newTitle.value.trim();if(!title){bwToast('Ajoute un titre');return}let id=Date.now();if(bwAddType==='task')BW.tasks.push({id,title,cat:newCategory.value,due:newDue.value,done:false,priority:+newPriority.value});else BW.events.push({id,title,cat:newCategory.value,date:newDate.value,time:newTime.value,endDate:newEndDate.value||newDate.value,endTime:newEndTime.value,note:newNote.value.trim()});bwSave();closeAdd();bwRenderMain();bwRenderListsOverlay();bwToast(bwAddType==='task'?'Tâche ajoutée':'Événement ajouté')}
+function bwToast(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1500)}
+// Wire the original bottom nav without altering its markup.
+const bwNav=document.querySelectorAll('.nav button');
+bwNav[0].onclick=closeOverlay;bwNav[1].onclick=()=>openOverlay('lists');bwNav[2].onclick=openAdd;bwNav[3].onclick=()=>openOverlay('month');bwNav[4].onclick=()=>openOverlay('settings');
+document.querySelector('.avatar').onclick=()=>openOverlay('settings');
+document.querySelector('.section-title span').onclick=null;
+document.querySelectorAll('.section-title')[2].querySelector('span').onclick=()=>openOverlay('lists');
+// Swipe the original week card left/right; no visible controls added.
+let bwTouchX=null;document.querySelector('.hero').addEventListener('touchstart',e=>bwTouchX=e.changedTouches[0].clientX,{passive:true});document.querySelector('.hero').addEventListener('touchend',e=>{if(bwTouchX===null)return;let dx=e.changedTouches[0].clientX-bwTouchX;if(Math.abs(dx)>45){bwWeekStart=new Date(bwWeekStart);bwWeekStart.setDate(bwWeekStart.getDate()+(dx<0?7:-7));bwSelected=new Date(bwWeekStart);bwRenderMain()}bwTouchX=null},{passive:true});
+bwRenderMain();
+</script>
+
+</body>
+</html>

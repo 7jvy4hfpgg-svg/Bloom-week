@@ -151,12 +151,36 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
 .monthlegend i{width:8px;height:8px;border-radius:99px;display:inline-block}
 
 
-/* --- V10 : tâches réalisées dans le semainier --- */
-.completed-tasks{margin-top:9px;padding-top:8px;border-top:1px dashed #eadfda}
-.completed-title{font-size:10px;font-weight:800;color:#a06a7c;text-transform:uppercase;letter-spacing:.08em;margin:2px 0 5px}
-.completed-task{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:12px;color:#6f5961}
-.completed-check{width:18px;height:18px;min-width:18px;border-radius:50%;background:#e8a7bf;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;line-height:1;margin-top:1px}
-.completed-copy{flex:1;line-height:1.3}.completed-copy b{font-size:12px;font-weight:650}.completed-copy small{display:block;color:var(--muted);font-size:9px;margin-top:2px}.completed-time{font-size:9px;color:#a38f95;white-space:nowrap;margin-top:2px}
+/* --- V11 : coche nacrée + édition/suppression --- */
+.taskactions{display:flex;gap:4px;flex:none}
+.taskedit,.taskdel{width:30px;height:30px;border:1px solid #eadfda;background:#fffaf7;border-radius:10px;color:#9d6877;font-size:15px;display:flex;align-items:center;justify-content:center;padding:0}
+.taskedit:active,.taskdel:active{transform:scale(.96)}
+.task.done input[type=checkbox]{appearance:none;-webkit-appearance:none;width:20px;height:20px;border-radius:50%;border:1px solid #efc6d4;background:radial-gradient(circle at 35% 28%,#fff 0 8%,#f9dce6 25%,#e9a9bf 62%,#d98ca8 100%);box-shadow:inset 0 1px 2px rgba(255,255,255,.9),0 2px 7px rgba(190,116,145,.20);position:relative}
+.task.done input[type=checkbox]::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
+.event-delete-row{margin-top:10px}
+.btn.danger{width:100%;border-color:#edcbd4;background:#fff5f7;color:#b55f78;font-weight:700}
+
+.completed-tasks{margin-top:8px;padding-top:7px;border-top:1px dashed #eadfda}
+.completed-task{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px;color:#6f5961}
+.completed-check{width:20px;height:20px;min-width:20px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#fff 0 8%,#f9dce6 25%,#e9a9bf 62%,#d98ca8 100%);box-shadow:inset 0 1px 2px rgba(255,255,255,.9),0 2px 7px rgba(190,116,145,.20);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+.completed-copy{flex:1}
+
+/* --- V12 : Bloom Week enrichi --- */
+.todaydash{margin:12px 0 4px;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.dashitem{background:#fffaf7;border:1px solid var(--line);border-radius:15px;padding:10px}
+.dashitem b{display:block;font-family:Georgia,serif;font-size:17px}.dashitem small{font-size:9px;color:var(--muted)}
+.loadbar{height:5px;background:#f0e4e7;border-radius:99px;margin-top:7px;overflow:hidden}.loadbar i{display:block;height:100%;background:linear-gradient(90deg,#efc5d4,#c88ba2);border-radius:99px}
+.quickrow{display:flex;gap:7px;overflow:auto;padding:8px 0 2px}.quickrow button{white-space:nowrap;border:1px solid var(--line);background:#fffaf7;color:var(--ink);border-radius:99px;padding:7px 10px;font-size:10px}.quickrow button.active{background:#f1e4e8;color:#7d5662;font-weight:800}
+.taskmeta{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}.tasktag{font-size:8px;padding:3px 6px;border-radius:99px;background:#f3e7eb;color:#805664}.tasktag.due{background:#fff0d8;color:#8b6a36}
+.complete-date-pop{position:fixed;inset:0;background:rgba(60,43,49,.28);display:none;align-items:flex-end;justify-content:center;z-index:90}.complete-date-pop.show{display:flex}
+.complete-date-sheet{width:min(460px,100%);background:#fffaf7;border-radius:26px 26px 0 0;padding:18px 16px calc(22px + env(safe-area-inset-bottom))}
+.complete-date-sheet h3{font-family:Georgia,serif;font-size:23px;margin:0 0 6px}.complete-date-sheet p{font-size:11px;color:var(--muted);margin:0 0 12px}
+.complete-date-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}.complete-date-options button{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px;color:var(--ink)}
+.complete-custom{display:flex;gap:8px;margin-top:9px}.complete-custom input{flex:1;border:1px solid var(--line);border-radius:13px;padding:10px;background:#fff}
+.workstatus{font-size:9px;border-radius:99px;padding:4px 7px;background:#eee;color:#6f5961;margin-left:6px}
+.work-NJ,.work-NL{background:#fff4c9}.work-CP{background:#ffd8ec;color:#9c4c76}.work-FORM{background:#ffd0df;color:#a04465}.work-RH{background:#c8f3c9;color:#42784b}.work-REC,.work-RECF,.work-RNC{background:#f2c8ef;color:#82537e}.work-OFF{background:#c9f3dd;color:#44745d}
+.backupbox{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:#fffaf7}.backupbox .row{margin-top:8px}
+.undo-toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);z-index:100;background:#4a3a3f;color:white;border-radius:99px;padding:9px 12px;font-size:11px;display:none;gap:10px;align-items:center}.undo-toast.show{display:flex}.undo-toast button{border:0;background:#f4dce4;color:#6f4554;border-radius:99px;padding:5px 8px;font-weight:800}
 
 </style>
 </head>
@@ -188,6 +212,16 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
   <div class="days" id="weekDays"></div>
 </div>
 
+<div class="todaydash" id="todayDash">
+  <div class="dashitem"><small>AUJOURD’HUI</small><b id="dashNext">—</b><small id="dashNextSub">Prochain élément</small></div>
+  <div class="dashitem"><small>CHARGE</small><b id="dashLoad">Douce ♡</b><div class="loadbar"><i id="dashLoadBar" style="width:20%"></i></div></div>
+  <div class="dashitem"><small>TÂCHES</small><b id="dashTasks">0</b><small>à faire</small></div>
+  <div class="dashitem"><small>TRAVAIL</small><b id="dashWork">Repos</b><small id="dashWorkSub">Planning réel</small></div>
+</div>
+<div class="quickrow" id="weekFilters">
+<button class="active" data-filter="all">Tout</button><button data-filter="work">Travail</button><button data-filter="kids">Enfants</button><button data-filter="health">Santé</button><button data-filter="personal">Perso</button><button data-filter="vincent">Vincent</button><button data-filter="leisure">Sorties</button><button data-filter="travel">Voyage</button>
+</div>
+
 <div class="section">
   <div class="section-title">
     <h2 id="focus">Aujourd’hui</h2>
@@ -198,7 +232,7 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
 
 </section>
 
-<section id="lists" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Mes listes ♡</h2><div class="sub">Ajoute une tâche en quelques secondes. Une fois cochée, elle apparaît le jour où tu l’as réalisée.</div></div><button class="back" data-nav="week">‹</button></div>
+<section id="lists" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Mes listes ♡</h2><div class="sub">Ajoute une tâche en quelques secondes.</div></div><button class="back" data-nav="week">‹</button></div>
 
 <div class="listbar">
 <input id="search" class="search" placeholder="Rechercher une tâche…">
@@ -283,6 +317,10 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
   </div>
   <div class="reminder-note">Cette version sonne lorsque Bloom Week est ouvert ou actif. Si iOS ferme/suspend totalement l’app, GitHub Pages seul ne peut pas lancer une alarme à heure fixe ; une vraie notification Push PWA nécessite un service d’envoi externe.</div>
 </div>
+<div class="backupbox"><b>Sauvegarde Bloom Week</b><div class="notifstatus" id="backupStatus">Tes données restent sur cet appareil.</div>
+<div class="row"><button class="btn" id="exportBackup">Exporter</button><button class="btn" id="importBackupBtn">Importer</button></div>
+<input type="file" id="importBackupFile" accept=".json,application/json" style="display:none">
+</div>
 </section>
 
 <section id="vac" class="page"><div class="overlaytop"><div><div class="kicker">Bloom Week</div><h2>Vacances scolaires ♡</h2><div class="sub">Île de La Réunion · organisation familiale.</div></div><button class="back" data-nav="week">›</button></div>
@@ -321,14 +359,17 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
 </div></div>
 
 <div class="modal" id="taskModal"><div class="sheet">
-<div class="task-sheet-title">Nouvelle tâche ♡</div>
-<div class="task-sheet-sub">Ici tu ajoutes une tâche, pas un événement d’agenda.</div>
+<div class="task-sheet-title" id="taskModalTitle">Nouvelle tâche ♡</div>
+<div class="task-sheet-sub" id="taskModalSub">Ici tu ajoutes une tâche, pas un événement d’agenda.</div><input id="taskEditIndex" type="hidden" value="">
 <div class="field"><label>Que veux-tu faire ?</label><input id="taskTitle" placeholder="Ex. Relancer mon avocat"></div>
 <div class="field"><label>Dossier</label><select id="taskFolder">
 <option value="bloom">Cosmic Bloom</option><option value="work">Père Favron</option><option value="divorce">Divorce</option><option value="home">Logement</option><option value="finance">Finances</option><option value="kids">Enfants / Famille</option><option value="personal">Vie perso</option><option value="health">Santé</option>
 </select></div>
 <div class="field"><label>Note facultative</label><textarea id="taskNote" rows="3" placeholder="Détail utile, document, téléphone…"></textarea></div>
-<div class="row"><button class="btn" id="cancelTask">Annuler</button><button class="btn primary" id="saveTask">Ajouter la tâche</button></div>
+<div class="formgrid"><div class="field"><label>Échéance (facultative)</label><input id="taskDue" type="date"></div>
+<div class="field"><label>Priorité</label><select id="taskPriority"><option value="">Normale</option><option value="!">Importante !</option><option value="!!">Prioritaire !!</option></select></div></div>
+<div class="field"><label>Sous-tâches (une par ligne)</label><textarea id="taskSubs" rows="3" placeholder="Ex. Appeler&#10;Envoyer le document"></textarea></div>
+<div class="row"><button class="btn" id="cancelTask">Annuler</button><button class="btn primary" id="saveTask">Ajouter la tâche</button></div><button class="btn" id="tomorrowTask" style="width:100%;margin-top:8px">Reporter l’échéance à demain</button>
 </div></div>
 
 <div class="modal" id="modal"><div class="sheet">
@@ -337,7 +378,16 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
 <div class="formgrid"><div class="field"><label>Date</label><input id="eventDate" type="date"></div><div class="field"><label>Catégorie</label><select id="eventCat"><option value="personal">Personnel</option><option value="work">Travail · EHPAD</option><option value="kids">Enfants / Famille</option><option value="vincent">Vincent / Pompiers</option><option value="health">Santé</option><option value="leisure">Loisirs / Sorties</option><option value="travel">Voyage</option></select></div></div>
 <div class="formgrid"><div class="field"><label>Heure</label><input id="eventTime" type="time"></div><div class="field"><label>Fin (facultatif)</label><input id="eventEnd" type="time"></div></div>
 <div class="field"><label>Rappel</label><select id="eventReminder"><option value="">Aucun</option><option value="0">À l’heure</option><option value="5">5 min avant</option><option value="10">10 min avant</option><option value="30">30 min avant</option><option value="60">1 h avant</option><option value="120">2 h avant</option><option value="1440">La veille</option></select></div>
-<div class="field"><label>Note (facultatif)</label><textarea id="eventNote" rows="3" placeholder="Lieu, personne, détail utile…"></textarea></div><div class="row"><button class="btn" id="cancel">Annuler</button><button class="btn primary" id="save">Enregistrer</button></div></div></div>
+<div class="field"><label>Note (facultatif)</label><textarea id="eventNote" rows="3" placeholder="Lieu, personne, détail utile…"></textarea></div><div class="row"><button class="btn" id="cancel">Annuler</button><button class="btn primary" id="save">Enregistrer</button></div><div class="event-delete-row"><button class="btn danger" id="deleteEvent" type="button" style="display:none">Supprimer cet événement</button></div></div></div>
+
+
+<div class="complete-date-pop" id="completeDatePop"><div class="complete-date-sheet">
+<h3>Quand l’as-tu réalisée ? ♡</h3><p id="completeTaskName">Choisis le jour réel : la tâche apparaîtra dans cette journée du semainier.</p>
+<div class="complete-date-options"><button id="completeToday">Aujourd’hui</button><button id="completeYesterday">Hier</button></div>
+<div class="complete-custom"><input id="completeCustomDate" type="date"><button class="btn primary" id="completeCustomSave">Choisir</button></div>
+<button class="btn" id="completeCancel" style="width:100%;margin-top:9px">Annuler</button>
+</div></div>
+<div class="undo-toast" id="undoToast"><span id="undoText">Élément supprimé</span><button id="undoBtn">Annuler</button></div>
 
 <div class="alarm-overlay" id="alarmOverlay">
   <div class="alarm-card">
@@ -371,6 +421,21 @@ function monthLabel(d){return cap(new Intl.DateTimeFormat('fr-FR',{month:'long',
 function relation(d){var t=strip(new Date()),y=addDays(t,-1),tm=addDays(t,1);if(sameDate(d,y))return'Hier';if(sameDate(d,t))return"Aujourd’hui";if(sameDate(d,tm))return'Demain';return''}
 function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 var IMPORTED_EVENTS=[{"id": "imp-20260817-cmpea", "date": "2026-08-17", "time": "14:00", "title": "CMPEA Noor", "cat": "personal", "note": "Rendez-vous Noor"}, {"id": "imp-20260818-noor", "date": "2026-08-18", "time": "07:30", "title": "Rentrée scolaire Noor", "cat": "kids", "note": "Rentrée scolaire"}, {"id": "imp-20260819-elijah", "date": "2026-08-19", "time": "07:30", "title": "Rentrée scolaire Elijah", "cat": "kids", "note": "Rentrée scolaire"}, {"id": "imp-20260819-avec", "date": "2026-08-19", "time": "10:00", "title": "Avec ❤️", "cat": "personal", "note": ""}, {"id": "imp-20260821-louange", "date": "2026-08-21", "time": "18:30", "title": "Soirée Louange", "cat": "leisure", "note": ""}, {"id": "imp-20260826-gyneco", "date": "2026-08-26", "time": "08:30", "title": "RDV Gynéco", "cat": "health", "note": ""}, {"id": "imp-20260904-anniv", "date": "2026-09-04", "time": "", "title": "Anniv. de mon chéri ❤️", "cat": "personal", "note": "Journée entière"}, {"id": "imp-20260904-franco", "date": "2026-09-04", "time": "16:00", "title": "Franco - Festival", "cat": "leisure", "note": "Francofolies"}, {"id": "imp-20260905-hotel", "date": "2026-09-05", "time": "10:15", "title": "Hôtel L’Hermitage - Journée détente", "cat": "leisure", "note": ""}, {"id": "imp-20260909-piton", "date": "2026-09-09", "time": "12:00", "title": "⛰️ Piton des Neiges", "cat": "leisure", "note": "Randonnée"}, {"id": "imp-20260910-piton", "date": "2026-09-10", "time": "", "title": "⛰️ Piton des Neiges", "cat": "leisure", "note": "Suite randonnée"}, {"id": "imp-20260924-avec", "date": "2026-09-24", "time": "", "title": "Avec ❤️", "cat": "personal", "note": ""}, {"id": "imp-20261010-bal", "date": "2026-10-10", "time": "17:00", "title": "Bal des Pompiers 🚒", "cat": "leisure", "note": ""}, {"id": "imp-20261020-lenzo", "date": "2026-10-20", "time": "07:00", "title": "Garde Lenzo", "cat": "kids", "note": ""}, {"id": "imp-20261021-lenzo", "date": "2026-10-21", "time": "", "title": "Garde Lenzo", "cat": "kids", "note": ""}, {"id": "imp-20261102-maurice", "date": "2026-11-02", "time": "", "title": "Île Maurice avec mon Chéri", "cat": "travel", "note": "Voyage"}, {"id": "imp-20261103-maurice", "date": "2026-11-03", "time": "", "title": "Île Maurice avec mon Chéri", "cat": "travel", "note": "Voyage"}, {"id": "imp-20261104-maurice", "date": "2026-11-04", "time": "", "title": "Île Maurice avec mon Chéri", "cat": "travel", "note": "Voyage"}, {"id": "imp-20261105-maurice", "date": "2026-11-05", "time": "", "title": "Île Maurice avec mon Chéri", "cat": "travel", "note": "Voyage"}, {"id": "imp-20261106-maurice", "date": "2026-11-06", "time": "", "title": "Île Maurice avec mon Chéri", "cat": "travel", "note": "Voyage"}];
+var ACTUAL_WORK={
+"2026-10-01":"NJ","2026-10-02":"OFF","2026-10-03":"RH","2026-10-04":"RH","2026-10-05":"FORM","2026-10-06":"FORM","2026-10-07":"FORM","2026-10-08":"RH","2026-10-09":"RECF","2026-10-10":"RNC","2026-10-11":"NJ","2026-10-12":"OFF","2026-10-13":"RH","2026-10-14":"NL","2026-10-15":"NL","2026-10-16":"OFF","2026-10-17":"RH","2026-10-18":"RH","2026-10-19":"CP","2026-10-20":"NJ","2026-10-21":"OFF","2026-10-22":"RH","2026-10-23":"NL","2026-10-24":"NL","2026-10-25":"NL","2026-10-26":"OFF","2026-10-27":"RH","2026-10-28":"NJ","2026-10-29":"NJ","2026-10-30":"OFF","2026-10-31":"RH","2026-11-01":"RH","2026-11-02":"CP","2026-11-03":"CP","2026-11-04":"CP","2026-11-05":"CP","2026-11-06":"CP","2026-11-07":"NJ","2026-11-08":"NJ","2026-11-09":"OFF","2026-11-10":"RH","2026-11-11":"NL","2026-11-12":"NL","2026-11-13":"OFF","2026-11-14":"RH","2026-11-15":"RH","2026-11-16":"NJ","2026-11-17":"NJ","2026-11-18":"OFF","2026-11-19":"RH","2026-11-20":"NL","2026-11-21":"NL","2026-11-22":"NL","2026-11-23":"OFF","2026-11-24":"RH","2026-11-25":"NJ","2026-11-26":"NJ","2026-11-27":"OFF","2026-11-28":"RH","2026-11-29":"RH","2026-11-30":"NL","2026-12-01":"NL","2026-12-02":"OFF","2026-12-03":"RH","2026-12-04":"NJ","2026-12-05":"NJ","2026-12-06":"NJ","2026-12-07":"OFF","2026-12-08":"RH","2026-12-09":"NL","2026-12-10":"NL","2026-12-11":"OFF","2026-12-12":"RH","2026-12-13":"RH","2026-12-14":"NJ","2026-12-15":"NJ","2026-12-16":"OFF","2026-12-17":"RH","2026-12-18":"NL","2026-12-19":"NL","2026-12-20":"NL","2026-12-21":"OFF","2026-12-22":"RH","2026-12-23":"NJ","2026-12-24":"NJ","2026-12-25":"OFF","2026-12-26":"RH","2026-12-27":"RH","2026-12-28":"NL","2026-12-29":"NL","2026-12-30":"OFF","2026-12-31":"RH",};
+
+function actualWorkLabel(code){return({NJ:'Nuit · Jade',NL:'Nuit · Lagon',CP:'Congé payé',FORM:'Formation',RH:'Repos hebdomadaire',RECF:'Récupération férié / heures',REC:'Récupération',RNC:'Récupération congé supplémentaire de nuit',OFF:'Jour non travaillé'})[code]||code}
+function actualWorkEvents(start,end){
+ var out=[];
+ Object.keys(ACTUAL_WORK).forEach(function(ds){
+   var d=parseISO(ds);if(d<start||d>end)return;
+   var c=ACTUAL_WORK[ds];
+   if(c==='NJ'||c==='NL')out.push({id:'actual-'+ds,date:ds,time:'20:30',end:'06:30',title:actualWorkLabel(c),cat:'work',note:'Planning Octime · '+(c==='NJ'?'secteur Jade':'secteur Lagon'),generated:true,workCode:c});
+   else if(c!=='OFF')out.push({id:'actual-'+ds,date:ds,time:'',title:actualWorkLabel(c),cat:c==='FORM'?'work':'personal',note:'Planning Octime',generated:true,workCode:c});
+ });
+ return out;
+}
+
 function generateWorkEvents(start,end){
   var out=[],anchor=new Date(2026,7,17),m=mondayOf(start),last=mondayOf(end);
   while(m<=last){
@@ -454,12 +519,22 @@ function generateCustodyEvents(start,end){var out=[],anchor=new Date(2026,7,17),
 function generatePompierEvents(){var dates=['2026-08-24','2026-09-02','2026-09-07','2026-09-09','2026-09-11','2026-09-14','2026-09-17','2026-09-23','2026-09-26','2026-09-29','2026-10-02'];return dates.map(function(d){return{id:'pompier-'+d,date:d,time:'07:00',title:'🚒 Pompier',cat:'vincent',note:'Garde pompier',generated:true}})}
 var USER_EVENTS;try{USER_EVENTS=JSON.parse(localStorage.getItem('bloom_events_v3')||'[]')}catch(e){USER_EVENTS=[]}
 var OVERRIDES;try{OVERRIDES=JSON.parse(localStorage.getItem('bloom_event_overrides_v1')||'{}')}catch(e){OVERRIDES={}}
-function saveUserEvents(){localStorage.setItem('bloom_events_v3',JSON.stringify(USER_EVENTS));localStorage.setItem('bloom_event_overrides_v1',JSON.stringify(OVERRIDES))}
-function allBaseEvents(){var start=new Date(2026,7,1),end=new Date(2028,11,31);return IMPORTED_EVENTS.concat(generateWorkEvents(start,end),generateCustodyEvents(start,end),generateSchoolDropoffs(start,end),generatePompierEvents())}
-function mergedEvents(){return allBaseEvents().map(function(e){return Object.assign({},e,OVERRIDES[e.id]||{})}).concat(USER_EVENTS)}
+var DELETED_EVENTS;try{DELETED_EVENTS=JSON.parse(localStorage.getItem('bloom_deleted_events_v1')||'{}')}catch(e){DELETED_EVENTS={}}
+function saveUserEvents(){
+ localStorage.setItem('bloom_events_v3',JSON.stringify(USER_EVENTS));
+ localStorage.setItem('bloom_event_overrides_v1',JSON.stringify(OVERRIDES));
+ localStorage.setItem('bloom_deleted_events_v1',JSON.stringify(DELETED_EVENTS));
+}
+function allBaseEvents(){
+ var start=new Date(2026,7,1),end=new Date(2028,11,31);
+ var autoWork=generateWorkEvents(start,end).filter(function(e){return !(e.date>='2026-10-01'&&e.date<='2026-12-31')});
+ return IMPORTED_EVENTS.concat(autoWork,actualWorkEvents(start,end),generateCustodyEvents(start,end),generateSchoolDropoffs(start,end),generatePompierEvents())
+}
+function mergedEvents(){return allBaseEvents().filter(function(e){return !DELETED_EVENTS[e.id]}).map(function(e){return Object.assign({},e,OVERRIDES[e.id]||{})}).concat(USER_EVENTS)}
 function eventsForDate(s){
   return mergedEvents()
     .filter(function(e){return e.date===s})
+    .filter(function(e){return WEEK_FILTER==='all'||e.cat===WEEK_FILTER})
     .sort(function(a,b){
       var at=a.time||'', bt=b.time||'';
       if(at && !bt) return -1;
@@ -468,6 +543,7 @@ function eventsForDate(s){
       return (a.title||'').localeCompare(b.title||'','fr');
     })
 }
+var WEEK_FILTER='all';
 var selectedDate=strip(new Date()),currentWeek=mondayOf(selectedDate),currentMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);
 function weekTypeLabel(monday){var anchor=new Date(2026,7,17),weeks=Math.round((monday-anchor)/(7*86400000)),small=((weeks%2)+2)%2===0;return small?'Petite semaine · 20 h':'Grande semaine · 50 h'}
 function categoryLabel(c){return({work:'Travail',kids:'Enfants / Famille',personal:'Personnel',vincent:'Vincent / Pompiers',health:'Santé',leisure:'Loisirs / Sorties',travel:'Voyage',shiftend:'Fin de poste'})[c]||'Personnel'}
@@ -521,6 +597,26 @@ function eventButton(ev){
   wrap.appendChild(ck);wrap.appendChild(star);wrap.appendChild(b);
   return wrap
 }
+
+function completedTasksForDate(dateString){
+ return TASKS.filter(function(t){
+   if(!t.done||!t.completedAt)return false;
+   var d=new Date(t.completedAt);
+   return !isNaN(d.getTime())&&iso(d)===dateString;
+ }).sort(function(a,b){return new Date(a.completedAt)-new Date(b.completedAt)});
+}
+function appendCompletedTasks(card,dateString){
+ var tasks=completedTasksForDate(dateString);
+ if(!tasks.length)return;
+ var box=document.createElement('div');box.className='completed-tasks';
+ tasks.forEach(function(t){
+   var row=document.createElement('div');row.className='completed-task';
+   row.innerHTML='<span class="completed-check">✓</span><span class="completed-copy"><b>'+escTask(t.title)+'</b></span>';
+   box.appendChild(row);
+ });
+ card.appendChild(box);
+}
+
 function renderWeek(){var end=addDays(currentWeek,6);document.getElementById('weekTitle').textContent=currentWeek.getDate()+' — '+end.getDate()+' '+new Intl.DateTimeFormat('fr-FR',{month:'long'}).format(end);document.getElementById('weekSubtitle').textContent=weekTypeLabel(currentWeek);var days=document.getElementById('weekDays');days.innerHTML='';for(var i=0;i<7;i++){var d=addDays(currentWeek,i),b=document.createElement('button'),r=relation(d);b.className='day'+(sameDate(d,selectedDate)?' active':'');b.dataset.date=iso(d);b.innerHTML=shortDate(d).split(' ')[0].toUpperCase()+'<b>'+d.getDate()+'</b>'+(r?'<span class="rel">'+r+'</span>':'');b.onclick=function(){selectedDate=parseISO(this.dataset.date);renderWeek()};days.appendChild(b)}var focusRel=relation(selectedDate);document.getElementById('focus').textContent=focusRel||cap(new Intl.DateTimeFormat('fr-FR',{weekday:'long'}).format(selectedDate));document.getElementById('focusDate').textContent=longDate(selectedDate);var board=document.getElementById('board');board.innerHTML='';var order=[selectedDate];for(var j=0;j<7;j++){var dd=addDays(currentWeek,j);if(!sameDate(dd,selectedDate))order.push(dd)}order.forEach(function(d){var card=document.createElement('article');card.className='card'+(sameDate(d,selectedDate)?' selected':'');var rel=relation(d),evs=eventsForDate(iso(d));card.innerHTML='<div class="cardhead"><b>'+cap(new Intl.DateTimeFormat('fr-FR',{weekday:'long'}).format(d))+' '+d.getDate()+(rel?' <span class="relpill">'+rel+'</span>':'')+'</b><button class="plus">+</button></div>';card.querySelector('.plus').onclick=function(e){e.stopPropagation();openEventModal(d)};if(!evs.length){var empty=document.createElement('div');empty.className='emptyday';empty.textContent='Aucun événement';card.appendChild(empty)}evs.forEach(function(ev){card.appendChild(eventButton(ev))});appendCompletedTasks(card,iso(d));board.appendChild(card)})}
 var DEFAULT_MONTH_COLORS={
   work:'#5b8def',kids:'#ff9d3d',health:'#63bd74',personal:'#f36f9a',
@@ -665,37 +761,28 @@ function saveTasks(){
     localStorage.setItem('bloom_custom_folders_v1',JSON.stringify(CUSTOM_FOLDERS));
   }catch(e){}
 }
-function escTask(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function completedTasksForDate(dateString){
-  return TASKS.filter(function(t){
-    if(!t.done||!t.completedAt)return false;
-    var d=new Date(t.completedAt);
-    return !isNaN(d.getTime())&&iso(d)===dateString;
-  }).sort(function(a,b){return new Date(a.completedAt)-new Date(b.completedAt)});
-}
-function appendCompletedTasks(card,dateString){
-  var tasks=completedTasksForDate(dateString);
-  if(!tasks.length)return;
-  var box=document.createElement('div');
-  box.className='completed-tasks';
-  var title=document.createElement('div');
-  title.className='completed-title';
-  title.textContent='Tâches réalisées';
-  box.appendChild(title);
-  tasks.forEach(function(t){
-    var row=document.createElement('div');
-    row.className='completed-task';
-    var doneDate=new Date(t.completedAt);
-    var time=pad(doneDate.getHours())+':'+pad(doneDate.getMinutes());
-    var folder=folderById(t.folder);
-    row.innerHTML='<span class="completed-check" aria-hidden="true">✓</span>'+
-      '<span class="completed-copy"><b>'+escTask(t.title)+'</b><small>'+escTask(folder?folder.name:'Tâche')+'</small></span>'+
-      '<span class="completed-time">'+time+'</span>';
-    box.appendChild(row);
-  });
-  card.appendChild(box);
-}
 
+var completionTarget=null,completionTargetIndex=-1;
+function openCompletionChooser(t,index){
+ completionTarget=t;completionTargetIndex=index;
+ document.getElementById('completeTaskName').textContent='« '+t.title+' » — choisis le jour réel de réalisation.';
+ document.getElementById('completeCustomDate').value=iso(new Date());
+ document.getElementById('completeDatePop').classList.add('show');
+}
+function setTaskCompletedOn(dateString){
+ if(!completionTarget)return;
+ var now=new Date(),p=dateString.split('-');
+ var d=new Date(+p[0],+p[1]-1,+p[2],now.getHours(),now.getMinutes(),0,0);
+ completionTarget.done=true;completionTarget.completedAt=d.toISOString();
+ saveTasks();document.getElementById('completeDatePop').classList.remove('show');
+ completionTarget=null;renderFolders();renderTasks();renderWeek();updateDashboard();
+}
+document.getElementById('completeToday').onclick=function(){setTaskCompletedOn(iso(new Date()))};
+document.getElementById('completeYesterday').onclick=function(){setTaskCompletedOn(iso(addDays(new Date(),-1)))};
+document.getElementById('completeCustomSave').onclick=function(){var v=document.getElementById('completeCustomDate').value;if(v)setTaskCompletedOn(v)};
+document.getElementById('completeCancel').onclick=function(){completionTarget=null;document.getElementById('completeDatePop').classList.remove('show');renderTasks()};
+
+function escTask(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function pendingCount(folder){
   return TASKS.filter(function(t){return !t.done&&(folder==='all'||t.folder===folder)}).length
 }
@@ -732,11 +819,28 @@ function renderTasks(){
    if((t.title+' '+(t.note||'')).toLowerCase().indexOf(q)<0)return;
    shown++;
    var row=document.createElement('div');row.className='task'+(t.done?' done':'');
-   row.innerHTML='<input type="checkbox" '+(t.done?'checked':'')+'><div class="taskcopy"><b>'+escTask(t.title)+'</b>'+(t.note?'<small>'+escTask(t.note)+'</small>':'')+'</div><button class="taskdel" aria-label="Supprimer">×</button>';
-   row.querySelector('input').onchange=function(){t.done=this.checked;if(t.done){t.completedAt=new Date().toISOString()}else{delete t.completedAt}saveTasks();renderFolders();renderTasks();renderWeek()};
+   row.innerHTML='<input type="checkbox" '+(t.done?'checked':'')+'><div class="taskcopy"><b>'+escTask(t.title)+'</b>'+(t.note?'<small>'+escTask(t.note)+'</small>':'')+'<div class="taskmeta">'+(t.priority?'<span class="tasktag">'+escTask(t.priority)+'</span>':'')+(t.due?'<span class="tasktag due">Échéance '+escTask(t.due)+'</span>':'')+(t.subtasks&&t.subtasks.length?'<span class="tasktag">'+t.subtasks.length+' sous-tâche'+(t.subtasks.length>1?'s':'')+'</span>':'')+'</div></div><div class="taskactions"><button class="taskedit" aria-label="Modifier la tâche">✎</button><button class="taskdel" aria-label="Supprimer la tâche">×</button></div>';
+   row.querySelector('input').onchange=function(){
+     if(this.checked){this.checked=false;openCompletionChooser(t,index)}
+     else{t.done=false;delete t.completedAt;saveTasks();renderFolders();renderTasks();renderWeek();updateDashboard()}
+   };
+   row.querySelector('.taskedit').onclick=function(){
+     refreshTaskFolderSelect();
+     document.getElementById('taskEditIndex').value=String(index);
+     document.getElementById('taskModalTitle').textContent='Modifier la tâche ♡';
+     document.getElementById('taskModalSub').textContent='Modifie le texte, le dossier ou la note de cette tâche.';
+     document.getElementById('taskTitle').value=t.title||'';
+     document.getElementById('taskNote').value=t.note||'';
+     document.getElementById('taskFolder').value=t.folder||'personal';
+     document.getElementById('taskDue').value=t.due||'';
+     document.getElementById('taskPriority').value=t.priority||'';
+     document.getElementById('taskSubs').value=(t.subtasks||[]).join('\n');
+     document.getElementById('saveTask').textContent='Enregistrer les modifications';
+     taskModal.classList.add('show');
+   };
    row.querySelector('.taskdel').onclick=function(){
-     if(confirm('Supprimer cette tâche ?')){
-       TASKS.splice(index,1);saveTasks();renderFolders();renderTasks()
+     if(confirm('Supprimer définitivement cette tâche ?')){
+       var removed=TASKS.splice(index,1)[0];saveTasks();renderFolders();renderTasks();renderWeek();showUndo('task',removed,index);updateDashboard()
      }
    };
    todo.appendChild(row);
@@ -749,19 +853,37 @@ document.getElementById('search').oninput=renderTasks;
 var taskModal=document.getElementById('taskModal');
 document.getElementById('addTaskBtn').onclick=function(){
  refreshTaskFolderSelect();
+ document.getElementById('taskEditIndex').value='';
+ document.getElementById('taskModalTitle').textContent='Nouvelle tâche ♡';
+ document.getElementById('taskModalSub').textContent='Ici tu ajoutes une tâche, pas un événement d’agenda.';
+ document.getElementById('saveTask').textContent='Ajouter la tâche';
  document.getElementById('taskTitle').value='';
  document.getElementById('taskNote').value='';
+ document.getElementById('taskDue').value='';document.getElementById('taskPriority').value='';document.getElementById('taskSubs').value='';
  document.getElementById('taskFolder').value=currentFolder==='all'?'personal':currentFolder;
  taskModal.classList.add('show');
 };
+
+document.getElementById('tomorrowTask').onclick=function(){document.getElementById('taskDue').value=iso(addDays(new Date(),1))};
+
 document.getElementById('cancelTask').onclick=function(){taskModal.classList.remove('show')};
 document.getElementById('saveTask').onclick=function(){
  var title=document.getElementById('taskTitle').value.trim();
  if(!title){alert('Écris simplement la tâche que tu veux ajouter.');return}
  var folder=document.getElementById('taskFolder').value;
- TASKS.unshift({folder:folder,title:title,note:document.getElementById('taskNote').value.trim(),done:false});
+ var note=document.getElementById('taskNote').value.trim();
+ var due=document.getElementById('taskDue').value;
+ var priority=document.getElementById('taskPriority').value;
+ var subtasks=document.getElementById('taskSubs').value.split(/\n+/).map(function(x){return x.trim()}).filter(Boolean);
+ var editIndex=document.getElementById('taskEditIndex').value;
+ if(editIndex!==''){
+   var idx=Number(editIndex);
+   if(TASKS[idx]){TASKS[idx].title=title;TASKS[idx].folder=folder;TASKS[idx].note=note;TASKS[idx].due=due;TASKS[idx].priority=priority;TASKS[idx].subtasks=subtasks}
+ }else{
+   TASKS.unshift({folder:folder,title:title,note:note,due:due,priority:priority,subtasks:subtasks,done:false});
+ }
  saveTasks();currentFolder=folder;taskModal.classList.remove('show');
- renderFolders();renderTasks();
+ renderFolders();renderTasks();renderWeek();
 };
 
 var listModal=document.getElementById('listModal'),chosenIcon='☾';
@@ -793,14 +915,83 @@ document.getElementById('saveList').onclick=function(){
  });
  saveTasks();currentFolder=id;listModal.classList.remove('show');
  renderFolders();refreshTaskFolderSelect();renderTasks();
+
+function updateDashboard(){
+ var today=strip(new Date()),ds=iso(today),evs=mergedEvents().filter(function(e){return e.date===ds}).sort(function(a,b){return (a.time||'99:99').localeCompare(b.time||'99:99')});
+ var pending=TASKS.filter(function(t){return !t.done}).length;
+ document.getElementById('dashTasks').textContent=pending;
+ var next=evs[0];document.getElementById('dashNext').textContent=next?(next.time?next.time+' · ':'')+next.title:'Rien de prévu';
+ var wc=ACTUAL_WORK[ds],wlabel=wc?actualWorkLabel(wc):'Planning habituel';
+ document.getElementById('dashWork').textContent=wlabel;
+ document.getElementById('dashWorkSub').textContent=wc?'Planning Octime':'Rotation Bloom Week';
+ var load=Math.min(4,evs.length+Math.min(2,pending>3?2:pending>0?1:0)+(wc==='NJ'||wc==='NL'?1:0));
+ var names=['Très douce ♡','Douce ♡','Équilibrée','Chargée','Très chargée'];
+ document.getElementById('dashLoad').textContent=names[load];
+ document.getElementById('dashLoadBar').style.width=(20+load*20)+'%';
+}
+document.querySelectorAll('#weekFilters [data-filter]').forEach(function(b){b.onclick=function(){
+ WEEK_FILTER=this.dataset.filter;document.querySelectorAll('#weekFilters button').forEach(function(x){x.classList.toggle('active',x===b)});renderWeek();
+}});
+
+updateDashboard();
 };
 
 renderFolders();refreshTaskFolderSelect();renderTasks();
 
+
+var LAST_DELETED=null,UNDO_TIMER=null;
+function showUndo(type,item,index){
+ LAST_DELETED={type:type,item:item,index:index};
+ document.getElementById('undoText').textContent=(type==='task'?'Tâche':'Événement')+' supprimé';
+ document.getElementById('undoToast').classList.add('show');
+ clearTimeout(UNDO_TIMER);UNDO_TIMER=setTimeout(function(){document.getElementById('undoToast').classList.remove('show');LAST_DELETED=null},7000);
+}
+document.getElementById('undoBtn').onclick=function(){
+ if(!LAST_DELETED)return;
+ if(LAST_DELETED.type==='task'){TASKS.splice(Math.min(LAST_DELETED.index,TASKS.length),0,LAST_DELETED.item);saveTasks();renderFolders();renderTasks();renderWeek()}
+ else if(LAST_DELETED.type==='userEvent'){USER_EVENTS.push(LAST_DELETED.item);saveUserEvents();renderWeek();renderMonth()}
+ else if(LAST_DELETED.type==='baseEvent'){delete DELETED_EVENTS[LAST_DELETED.item.id];saveUserEvents();renderWeek();renderMonth()}
+ document.getElementById('undoToast').classList.remove('show');LAST_DELETED=null;updateDashboard();
+};
+
 var modal=document.getElementById('modal'),editingEvent=null;
-function openEventModal(d,ev){editingEvent=ev||null;document.getElementById('eventModalTitle').textContent=ev?'Modifier l’événement':'Nouvel événement d’agenda';document.getElementById('eventDatePreview').textContent=longDate(d);document.getElementById('title').value=ev?ev.title:'';document.getElementById('eventDate').value=ev?ev.date:iso(d);document.getElementById('eventTime').value=ev?(ev.time||''):'';document.getElementById('eventEnd').value=ev?(ev.end||''):'';document.getElementById('eventCat').value=ev?(ev.cat||'personal'):'personal';document.getElementById('eventReminder').value=(ev&&ev.reminder!==undefined)?String(ev.reminder):'';document.getElementById('eventNote').value=ev?(ev.note||''):'';modal.classList.add('show')}
+function openEventModal(d,ev){editingEvent=ev||null;document.getElementById('eventModalTitle').textContent=ev?'Modifier l’événement':'Nouvel événement d’agenda';document.getElementById('eventDatePreview').textContent=longDate(d);document.getElementById('title').value=ev?ev.title:'';document.getElementById('eventDate').value=ev?ev.date:iso(d);document.getElementById('eventTime').value=ev?(ev.time||''):'';document.getElementById('eventEnd').value=ev?(ev.end||''):'';document.getElementById('eventCat').value=ev?(ev.cat||'personal'):'personal';document.getElementById('eventReminder').value=(ev&&ev.reminder!==undefined)?String(ev.reminder):'';document.getElementById('eventNote').value=ev?(ev.note||''):'';document.getElementById('deleteEvent').style.display=ev?'block':'none';modal.classList.add('show')}
 document.getElementById('cancel').onclick=function(){modal.classList.remove('show')};
 document.getElementById('save').onclick=function(){var title=document.getElementById('title').value.trim();if(!title){alert('Ajoute un titre à ton événement.');return}var data={title:title,date:document.getElementById('eventDate').value,time:document.getElementById('eventTime').value,end:document.getElementById('eventEnd').value,cat:document.getElementById('eventCat').value,reminder:document.getElementById('eventReminder').value,note:document.getElementById('eventNote').value.trim()};if(editingEvent){if(editingEvent.id.indexOf('usr-')===0){var u=USER_EVENTS.find(function(x){return x.id===editingEvent.id});if(u)Object.assign(u,data)}else{OVERRIDES[editingEvent.id]=Object.assign({},OVERRIDES[editingEvent.id]||{},data)}}else{data.id='usr-'+Date.now();USER_EVENTS.push(data)}saveUserEvents();modal.classList.remove('show');selectedDate=parseISO(data.date);currentWeek=mondayOf(selectedDate);currentMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);renderWeek();flash()};
+
+document.getElementById('deleteEvent').onclick=function(){
+ if(!editingEvent)return;
+ if(!confirm('Supprimer définitivement cet événement ?'))return;
+ if(String(editingEvent.id||'').indexOf('usr-')===0){
+   var removedUser=USER_EVENTS.find(function(x){return x.id===editingEvent.id});USER_EVENTS=USER_EVENTS.filter(function(x){return x.id!==editingEvent.id});if(removedUser)showUndo('userEvent',removedUser,0);
+ }else{
+   DELETED_EVENTS[editingEvent.id]=true;
+   showUndo('baseEvent',Object.assign({},editingEvent),0);
+   delete OVERRIDES[editingEvent.id];
+ }
+ saveUserEvents();
+ modal.classList.remove('show');
+ editingEvent=null;
+ renderWeek();
+ if(document.getElementById('month').classList.contains('active'))renderMonth();
+ flash();
+};
+
+
+document.getElementById('exportBackup').onclick=function(){
+ var data={app:'Bloom Week',version:'V12',exportedAt:new Date().toISOString(),storage:{}};
+ for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf('bloom_')===0)data.storage[k]=localStorage.getItem(k)}
+ var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);a.download='BloomWeek-sauvegarde-'+iso(new Date())+'.json';a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},1000);
+ document.getElementById('backupStatus').textContent='Sauvegarde exportée · '+new Date().toLocaleString('fr-FR');
+};
+document.getElementById('importBackupBtn').onclick=function(){document.getElementById('importBackupFile').click()};
+document.getElementById('importBackupFile').onchange=function(){
+ var f=this.files&&this.files[0];if(!f)return;var r=new FileReader();
+ r.onload=function(){try{var d=JSON.parse(r.result);if(!d.storage)throw 0;if(!confirm('Restaurer cette sauvegarde Bloom Week ?'))return;Object.keys(d.storage).forEach(function(k){localStorage.setItem(k,d.storage[k])});location.reload()}catch(e){alert('Cette sauvegarde n’est pas reconnue.')}};
+ r.readAsText(f);
+};
+
 document.getElementById('settingsSave').onclick=flash;document.getElementById('vacSave').onclick=flash;
 
 function notifState(){
