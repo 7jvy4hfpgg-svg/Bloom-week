@@ -152,6 +152,9 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
 
 
 .completed-tasks{margin-top:9px;padding-top:8px;border-top:1px dashed #eadfda}.completed-title{font-size:9px;font-weight:800;color:#a06a7c;margin-bottom:4px}.completed-task{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px}.nacre-check{width:19px;height:19px;min-width:19px;border-radius:50%;background:radial-gradient(circle at 34% 26%,#fff 0 8%,#f9dce6 25%,#e8a7bf 63%,#d88da8 100%);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}.taskactions{display:flex;gap:3px}.taskedit,.taskdel{width:29px;height:29px;border:1px solid #eadfda;background:#fffaf7;border-radius:10px;color:#9d6877}.complete-pop{position:fixed;inset:0;background:rgba(60,43,49,.28);display:none;align-items:flex-end;z-index:90}.complete-pop.show{display:flex}.complete-sheet{width:100%;background:#fffaf7;border-radius:25px 25px 0 0;padding:18px 16px calc(22px + env(safe-area-inset-bottom))}.complete-sheet h3{font-family:Georgia,serif;font-size:22px;margin:0 0 5px}.complete-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.complete-opts button{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px}.complete-custom{display:flex;gap:8px;margin-top:8px}.complete-custom input{flex:1;border:1px solid var(--line);border-radius:13px;padding:10px}.workbox{margin:12px 0;border:1px solid var(--line);background:#fffaf7;border-radius:18px;padding:12px}.workbox h3{font-family:Georgia,serif;margin:0 0 4px;font-size:20px}.workchip{display:inline-block;margin-top:8px;font-size:10px;padding:6px 9px;border-radius:99px;background:#f1e5e8}.danger{border-color:#edcbd4!important;color:#b55f78!important;background:#fff5f7!important}
+
+.workmonth{margin:14px 0 20px}.workmonth h4{font-family:Georgia,serif;font-size:20px;margin:0 0 8px}.workgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.workdow{text-align:center;font-size:8px;color:var(--muted);font-weight:800;padding:3px}.workday{min-height:47px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:5px 3px;text-align:center}.workday.empty{visibility:hidden}.workday .n{font-size:9px;color:#8f7c82}.workday .code{display:block;font-size:9px;font-weight:800;margin-top:5px}.workday.NJ,.workday.NL{background:#fff6ce}.workday.CP{background:#ffdced}.workday.FORM{background:#ffd5e0}.workday.RH{background:#d5f3d6}.workday.REC,.workday.RECF,.workday.RNC{background:#f0d0ee}.workday.OFF{background:#d6f4e5}.worklegend{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 14px}.worklegend span{font-size:8px;padding:4px 6px;border-radius:99px;border:1px solid var(--line)}
+.workbox{cursor:pointer;-webkit-tap-highlight-color:transparent}
 </style>
 </head>
 <body>
@@ -182,7 +185,7 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
   <div class="days" id="weekDays"></div>
 </div>
 
-<div class="workbox"><h3>Mon planning professionnel ☾</h3><small id="workSummaryText">Planning du jour</small><br><span class="workchip" id="workChip">—</span></div>
+<button class="workbox" id="openWorkPlanning" type="button" style="width:100%;text-align:left;color:inherit;font:inherit"><h3>Mon planning professionnel ☾</h3><small id="workSummaryText">Planning du jour · toucher pour ouvrir</small><br><span class="workchip" id="workChip">—</span></button>
 <div class="section">
   <div class="section-title">
     <h2 id="focus">Aujourd’hui</h2>
@@ -334,6 +337,11 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:500}h1{font-size:3
 <div class="field"><label>Rappel</label><select id="eventReminder"><option value="">Aucun</option><option value="0">À l’heure</option><option value="5">5 min avant</option><option value="10">10 min avant</option><option value="30">30 min avant</option><option value="60">1 h avant</option><option value="120">2 h avant</option><option value="1440">La veille</option></select></div>
 <div class="field"><label>Note (facultatif)</label><textarea id="eventNote" rows="3" placeholder="Lieu, personne, détail utile…"></textarea></div><div class="row"><button class="btn" id="cancel">Annuler</button><button class="btn primary" id="save">Enregistrer</button></div><button class="btn danger" id="deleteEvent" style="display:none;width:100%;margin-top:8px">Supprimer cet événement</button></div></div>
 
+
+<div class="complete-pop" id="workPlanningPop"><div class="complete-sheet" style="max-height:88vh;overflow:auto">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div><h3 style="margin-bottom:2px">Mon planning professionnel ☾</h3><p style="margin-top:0">Planning Octime réel · octobre à décembre 2026</p></div><button class="iconbtn" id="closeWorkPlanning" type="button">×</button></div>
+<div id="workPlanningMonths"></div>
+</div></div>
 <div class="complete-pop" id="completePop"><div class="complete-sheet"><h3>Quand l’as-tu réalisée ? ♡</h3><p id="completeName">Choisis le vrai jour de réalisation.</p><div class="complete-opts"><button id="doneToday">Aujourd’hui</button><button id="doneYesterday">Hier</button></div><div class="complete-custom"><input id="doneDate" type="date"><button class="btn primary" id="doneDateSave">Choisir</button></div><button class="btn" id="doneCancel" style="width:100%;margin-top:8px">Annuler</button></div></div>
 <div class="alarm-overlay" id="alarmOverlay">
   <div class="alarm-card">
@@ -368,6 +376,28 @@ function relation(d){var t=strip(new Date()),y=addDays(t,-1),tm=addDays(t,1);if(
 function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 var IMPORTED_EVENTS=[{"id": "imp-20260817-cmpea", "date": "2026-08-17", "time": "14:00", "title": "CMPEA Noor", "cat": "personal", "note": "Rendez-vous Noor"}, {"id": "imp-20260818-noor", "date": "2026-08-18", "time": "07:30", "title": "Rentrée scolaire Noor", "cat": "kids", "note": "Rentrée scolaire"}, {"id": "imp-20260819-elijah", "date": "2026-08-19", "time": "07:30", "title": "Rentrée scolaire Elijah", "cat": "kids", "note": "Rentrée scolaire"}, {"id": "imp-20260819-avec", "date": "2026-08-19", "time": "10:00", "title": "Avec ❤️", "cat": "personal", "note": ""}, {"id": "imp-20260821-louange", "date": "2026-08-21", "time": "18:30", "title": "Soirée Louange", "cat": "leisure", "note": ""}, {"id": "imp-20260826-gyneco", "date": "2026-08-26", "time": "08:30", "title": "RDV Gynéco", "cat": "health", "note": ""}, {"id": "imp-20260904-anniv", "date": "2026-09-04", "time": "", "title": "Anniv. de mon chéri ❤️", "cat": "personal", "note": "Journée entière"}, {"id": "imp-20260904-franco", "date": "2026-09-04", "time": "16:00", "title": "Franco - Festival", "cat": "leisure", "note": "Francofolies"}, {"id": "imp-20260905-hotel", "date": "2026-09-05", "time": "10:15", "title": "Hôtel L’Hermitage - Journée détente", "cat": "leisure", "note": ""}, {"id": "imp-20260909-piton", "date": "2026-09-09", "time": "12:00", "title": "⛰️ Piton des Neiges", "cat": "leisure", "note": "Randonnée"}, {"id": "imp-20260910-piton", "date": "2026-09-10", "time": "", "title": "⛰️ Piton des Neiges", "cat": "leisure", "note": "Suite randonnée"}, {"id": "imp-20260924-avec", "date": "2026-09-24", "time": "", "title": "Avec ❤️", "cat": "personal", "note": ""}, {"id": "imp-20261010-bal", "date": "2026-10-10", "time": "17:00", "title": "Bal des Pompiers 🚒", "cat": "leisure", "note": ""}, {"id": "imp-20261020-lenzo", "date": "2026-10-20", "time": "07:00", "title": "Garde Lenzo", "cat": "kids", "note": ""}, {"id": "imp-20261021-lenzo", "date": "2026-10-21", "time": "", "title": "Garde Lenzo", "cat": "kids", "note": ""}, {"id": "imp-20261102-maurice", "date": "2026-11-02", "time": "", "title": "Île Maurice avec mon Chéri", "cat": "travel", "note": "Voyage"}, {"id": "imp-20261103-maurice", "date": "2026-11-03", "time": "", "title": "Île Maurice avec mon Chéri", "cat": "travel", "note": "Voyage"}, {"id": "imp-20261104-maurice", "date": "2026-11-04", "time": "", "title": "Île Maurice avec mon Chéri", "cat": "travel", "note": "Voyage"}, {"id": "imp-20261105-maurice", "date": "2026-11-05", "time": "", "title": "Île Maurice avec mon Chéri", "cat": "travel", "note": "Voyage"}, {"id": "imp-20261106-maurice", "date": "2026-11-06", "time": "", "title": "Île Maurice avec mon Chéri", "cat": "travel", "note": "Voyage"}];
 var ACTUAL_WORK={"2026-10-01":"NJ","2026-10-02":"OFF","2026-10-03":"RH","2026-10-04":"RH","2026-10-05":"FORM","2026-10-06":"FORM","2026-10-07":"FORM","2026-10-08":"RH","2026-10-09":"RECF","2026-10-10":"RNC","2026-10-11":"NJ","2026-10-12":"OFF","2026-10-13":"RH","2026-10-14":"NL","2026-10-15":"NL","2026-10-16":"OFF","2026-10-17":"RH","2026-10-18":"RH","2026-10-19":"CP","2026-10-20":"NJ","2026-10-21":"OFF","2026-10-22":"RH","2026-10-23":"NL","2026-10-24":"NL","2026-10-25":"NL","2026-10-26":"OFF","2026-10-27":"RH","2026-10-28":"NJ","2026-10-29":"NJ","2026-10-30":"OFF","2026-10-31":"RH","2026-11-01":"RH","2026-11-02":"CP","2026-11-03":"CP","2026-11-04":"CP","2026-11-05":"CP","2026-11-06":"CP","2026-11-07":"NJ","2026-11-08":"NJ","2026-11-09":"OFF","2026-11-10":"RH","2026-11-11":"NL","2026-11-12":"NL","2026-11-13":"OFF","2026-11-14":"RH","2026-11-15":"RH","2026-11-16":"NJ","2026-11-17":"NJ","2026-11-18":"OFF","2026-11-19":"RH","2026-11-20":"NL","2026-11-21":"NL","2026-11-22":"NL","2026-11-23":"OFF","2026-11-24":"RH","2026-11-25":"NJ","2026-11-26":"NJ","2026-11-27":"OFF","2026-11-28":"RH","2026-11-29":"RH","2026-11-30":"NL","2026-12-01":"NL","2026-12-02":"OFF","2026-12-03":"RH","2026-12-04":"NJ","2026-12-05":"NJ","2026-12-06":"NJ","2026-12-07":"OFF","2026-12-08":"RH","2026-12-09":"NL","2026-12-10":"NL","2026-12-11":"OFF","2026-12-12":"RH","2026-12-13":"RH","2026-12-14":"NJ","2026-12-15":"NJ","2026-12-16":"OFF","2026-12-17":"RH","2026-12-18":"NL","2026-12-19":"NL","2026-12-20":"NL","2026-12-21":"OFF","2026-12-22":"RH","2026-12-23":"NJ","2026-12-24":"NJ","2026-12-25":"OFF","2026-12-26":"RH","2026-12-27":"RH","2026-12-28":"NL","2026-12-29":"NL","2026-12-30":"OFF","2026-12-31":"RH"};
+
+function renderProfessionalPlanning(){
+ var host=document.getElementById('workPlanningMonths');if(!host)return;host.innerHTML='';
+ var months=[{y:2026,m:9,name:'Octobre'},{y:2026,m:10,name:'Novembre'},{y:2026,m:11,name:'Décembre'}];
+ var dows=['L','M','M','J','V','S','D'];
+ months.forEach(function(mm){
+  var sec=document.createElement('div');sec.className='workmonth';
+  var h=document.createElement('h4');h.textContent=mm.name+' 2026';sec.appendChild(h);
+  var g=document.createElement('div');g.className='workgrid';
+  dows.forEach(function(x){var z=document.createElement('div');z.className='workdow';z.textContent=x;g.appendChild(z)});
+  var first=new Date(mm.y,mm.m,1),offset=(first.getDay()+6)%7,last=new Date(mm.y,mm.m+1,0).getDate();
+  for(var i=0;i<offset;i++){var e=document.createElement('div');e.className='workday empty';g.appendChild(e)}
+  for(var day=1;day<=last;day++){
+   var ds=mm.y+'-'+pad(mm.m+1)+'-'+pad(day),c=ACTUAL_WORK[ds]||'OFF';
+   var cell=document.createElement('div');cell.className='workday '+c;
+   cell.innerHTML='<span class="n">'+day+'</span><span class="code">'+c+'</span>';
+   cell.title=workLabel(c);g.appendChild(cell);
+  }
+  sec.appendChild(g);host.appendChild(sec);
+ });
+}
+
 function workLabel(c){return({NJ:'Nuit · Jade',NL:'Nuit · Lagon',CP:'Congé payé',FORM:'Formation',RH:'Repos hebdomadaire',RECF:'Récupération férié / heures supplémentaires',REC:'Récupération',RNC:'Récupération congé supplémentaire de nuit',OFF:'Jour non travaillé'})[c]||c}
 function actualWorkEvents(start,end){var out=[];Object.keys(ACTUAL_WORK).forEach(function(ds){var d=parseISO(ds),c=ACTUAL_WORK[ds];if(d<start||d>end||c==='OFF')return;out.push({id:'actual-'+ds,date:ds,time:(c==='NJ'||c==='NL')?'20:30':'',end:(c==='NJ'||c==='NL')?'06:30':'',title:workLabel(c),cat:'work',note:'Planning Octime',generated:true})});return out}
 
@@ -774,6 +804,11 @@ function openEventModal(d,ev){editingEvent=ev||null;document.getElementById('eve
 document.getElementById('cancel').onclick=function(){modal.classList.remove('show')};
 document.getElementById('save').onclick=function(){var title=document.getElementById('title').value.trim();if(!title){alert('Ajoute un titre à ton événement.');return}var data={title:title,date:document.getElementById('eventDate').value,time:document.getElementById('eventTime').value,end:document.getElementById('eventEnd').value,cat:document.getElementById('eventCat').value,reminder:document.getElementById('eventReminder').value,note:document.getElementById('eventNote').value.trim()};if(editingEvent){if(editingEvent.id.indexOf('usr-')===0){var u=USER_EVENTS.find(function(x){return x.id===editingEvent.id});if(u)Object.assign(u,data)}else{OVERRIDES[editingEvent.id]=Object.assign({},OVERRIDES[editingEvent.id]||{},data)}}else{data.id='usr-'+Date.now();USER_EVENTS.push(data)}saveUserEvents();modal.classList.remove('show');selectedDate=parseISO(data.date);currentWeek=mondayOf(selectedDate);currentMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);renderWeek();flash()};
 document.getElementById('deleteEvent').onclick=function(){if(!editingEvent||!confirm('Supprimer cet événement ?'))return;if(String(editingEvent.id||'').indexOf('usr-')===0)USER_EVENTS=USER_EVENTS.filter(function(x){return x.id!==editingEvent.id});else{DELETED_EVENTS[editingEvent.id]=true;delete OVERRIDES[editingEvent.id]}saveUserEvents();modal.classList.remove('show');editingEvent=null;renderWeek();renderMonth();flash()};
+
+document.getElementById('openWorkPlanning').onclick=function(){renderProfessionalPlanning();document.getElementById('workPlanningPop').classList.add('show')};
+document.getElementById('closeWorkPlanning').onclick=function(){document.getElementById('workPlanningPop').classList.remove('show')};
+document.getElementById('workPlanningPop').onclick=function(e){if(e.target===this)this.classList.remove('show')};
+
 document.getElementById('settingsSave').onclick=flash;document.getElementById('vacSave').onclick=flash;
 
 function notifState(){
